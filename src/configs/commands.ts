@@ -2,6 +2,7 @@ export type CommandTemplate = (username: string, serverIp: string, newUser: stri
 
 export interface Command {
   title: string;
+  description?: string;
   template: CommandTemplate;
 }
 
