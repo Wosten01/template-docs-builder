@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   Paper,
   Typography,
@@ -8,42 +8,62 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useCopy } from "../../hooks";
 
 interface CommandBlockProps {
   text: string;
-  copied: boolean;
-  onCopy: () => void;
   title?: string;
   description?: string;
+  sx?: object;
+  size?: "small" | "medium" | "large";
 }
 
 export const CommandBlock: React.FC<CommandBlockProps> = ({
   text,
-  copied,
-  onCopy,
   title,
   description,
+  sx,
+  size = "medium",
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
+  const { handleCopy, isCopied } = useCopy();
+  const copied = isCopied(text);
+
+  const getSizeStyles = useCallback(() => {
+    switch (size) {
+      case "small":
+        return { px: 2, py: 1, fontSize: "0.75rem" };
+      case "large":
+        return { px: 6, py: 5, fontSize: "1rem" };
+      default:
+        return { px: 5, py: 4, fontSize: "0.9rem" };
+    }
+  }, [size]);
+
+  const sizeStyles = useMemo(() => getSizeStyles(), [getSizeStyles]);
 
   return (
     <div>
       {title && (
         <Typography
           variant="subtitle1"
-          sx={{
-            fontWeight: 700,
-            pl: 1,
-            mb: 1,
-            color: theme.palette.primary.main,
-            fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-            textShadow: isDark
-              ? `0 0 8px ${theme.palette.primary.main}40`
-              : "none",
-            letterSpacing: "0.5px",
-            textTransform: "uppercase",
-          }}
+          sx={
+            sx
+              ? sx
+              : {
+                  fontWeight: 700,
+                  pl: 1,
+                  mb: 1,
+                  color: theme.palette.primary.main,
+                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                  textShadow: isDark
+                    ? `0 0 8px ${theme.palette.primary.main}40`
+                    : "none",
+                  letterSpacing: "0.5px",
+                  textTransform: "uppercase",
+                }
+          }
         >
           {title}
         </Typography>
@@ -68,11 +88,11 @@ export const CommandBlock: React.FC<CommandBlockProps> = ({
             ? theme.palette.action.selected
             : theme.palette.background.paper,
           color: theme.palette.text.primary,
-          px: 5,
-          py: 4,
+          px: sizeStyles.px,
+          py: sizeStyles.py,
+          fontSize: sizeStyles.fontSize,
           borderRadius: 2,
           fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-          fontSize: "0.9rem",
           position: "relative",
           cursor: "pointer",
           transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -106,9 +126,8 @@ export const CommandBlock: React.FC<CommandBlockProps> = ({
             opacity: copied ? 1 : 0,
             transition: "opacity 0.3s ease",
           },
-          
         }}
-        onClick={onCopy}
+        onClick={() => handleCopy(text)}
         title="Click to copy command"
       >
         <span

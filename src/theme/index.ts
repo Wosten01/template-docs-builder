@@ -14,6 +14,9 @@ const createTheme = (name: string) => {
     {
       spacing: 4,
       palette: themeConfig.palette,
+      typography: {
+       fontFamily: themeConfig.fontFamily || "'JetBrains Mono', 'Fira Code', monospace",
+      },
     },
     {
       name: themeConfig.name,

@@ -1,17 +1,26 @@
 import React from "react";
 import { FormControl, Select, MenuItem, Typography, Box } from "@mui/material";
-import { Code, Waves, Palette } from "@mui/icons-material";
+import { Code, Waves, Palette, Nature, AutoAwesome } from "@mui/icons-material";
 import variants from "../../theme/variants";
 import { useTheme } from "../../hooks/use-theme.hook";
+import { Themes } from "../../enums";
 
 const getThemeIcon = (themeName: string) => {
-  switch (themeName.toLowerCase()) {
-    case "matrix":
+  switch (themeName) {
+    case Themes.Matrix:
       return <Code sx={{ fontSize: 16, mr: 1, color: "#00ff88" }} />;
-    case "ocean":
+    case Themes.Ocean:
       return <Waves sx={{ fontSize: 16, mr: 1, color: "#00d4ff" }} />;
-    case "minimal":
+    case Themes.MinimalLight:
       return <Palette sx={{ fontSize: 16, mr: 1, color: "#666" }} />;
+    case Themes.BlueLight:
+      return <Palette sx={{ fontSize: 16, mr: 1, color: "#6366f1" }} />;
+    case Themes.MinimalDark:
+      return <Palette sx={{ fontSize: 16, mr: 1, color: "#414144" }} />;
+    case Themes.GreenLight:
+      return <Nature sx={{ fontSize: 16, mr: 1, color: "#4caf50" }} />;
+    case Themes.PurpleDark:
+      return <AutoAwesome sx={{ fontSize: 16, mr: 1, color: "#a855f7" }} />;
     default:
       return <Palette sx={{ fontSize: 16, mr: 1 }} />;
   }

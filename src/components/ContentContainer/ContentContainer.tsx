@@ -3,20 +3,23 @@ import { Box, Typography, Stack } from "@mui/material";
 import { CommandGroup } from "../CommandGroup";
 import { commandsConfig } from "../../configs";
 
-interface ContentProps {
+interface Props {
   username: string;
   serverIp: string;
   newUser: string;
   copiedIdx: string | null;
   handleCopy: (cmd: string, id: string) => void;
+  sx?: object;
+  spacing?: number;
 }
 
-export const ContentContainer: React.FC<ContentProps> = React.memo(({
+export const ContentContainer: React.FC<Props> = React.memo(({
   username,
   serverIp,
   newUser,
   copiedIdx,
   handleCopy,
+  sx
 }) => {
   const commandGroups = useMemo(() => 
     commandsConfig.map((group, gIdx) => (
@@ -35,7 +38,7 @@ export const ContentContainer: React.FC<ContentProps> = React.memo(({
   );
 
   return (
-    <Box sx={{ flex: 1, maxWidth: "calc(100% - 300px)" }}>
+    <Box sx={sx}>
       <Typography
         variant="h6"
         fontWeight={600}

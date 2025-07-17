@@ -21,8 +21,6 @@ export const CommandGroup: React.FC<CommandGroupProps> = ({
   username,
   serverIp,
   newUser,
-  copiedIdx,
-  handleCopy,
   groupIdx,
 }) => {
   const [expanded, setExpanded] = React.useState(true);
@@ -40,14 +38,12 @@ export const CommandGroup: React.FC<CommandGroupProps> = ({
           <CommandBlock
             key={id}
             text={cmdText}
-            copied={copiedIdx === id}
-            onCopy={() => handleCopy(cmdText, id)}
             title={cmd.title}
             description={cmd.description}
           />
         );
       }),
-    [commands, copiedIdx, groupIdx, handleCopy, newUser, serverIp, username]
+    [commands, groupIdx, newUser, serverIp, username]
   );
   return (
     <Accordion
@@ -55,8 +51,9 @@ export const CommandGroup: React.FC<CommandGroupProps> = ({
       sx={{
         mt: "0 !important",
         mb: "2 !important",
-        borderRadius: 2,
+        borderRadius: "4px !important",
         "&:before": { display: "none" },
+        overflow: "hidden",
       }}
     >
       <Box
@@ -83,7 +80,7 @@ export const CommandGroup: React.FC<CommandGroupProps> = ({
         </Typography>
       </Box>
       <Collapse in={expanded}>
-        <Stack spacing={8} className="px-5 py-2">
+        <Stack spacing={4} className="px-5 py-2 rounded-b-md ">
           {renderItems}
         </Stack>
       </Collapse>
