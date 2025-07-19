@@ -421,6 +421,185 @@ export const purpleDarkVariant: VariantType = {
   },
 };
 
+export const orangeBlueVariant: VariantType = {
+  name: Themes.OrangeBlue,
+  fontFamily: "'Nunito', 'Roboto', 'Helvetica Neue', sans-serif",
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#ff6b35",
+      contrastText: "#ffffff",
+    },
+    secondary: {
+      main: "#2196f3",
+      contrastText: "#ffffff",
+    },
+    background: {
+      default: "#fef7f0",
+      paper: "#ffffff",
+    },
+    text: {
+      primary: "#d84315",
+      secondary: "#1976d2",
+    },
+  },
+  header: {
+    color: "#d84315",
+    background: "#ffffff",
+    search: {
+      color: "#1976d2",
+    },
+    indicator: {
+      background: "rgba(255, 107, 53, 0.2)",
+    },
+  },
+  footer: {
+    color: "#d84315",
+    background: "#ffffff",
+  },
+  sidebar: {
+    color: "#d84315",
+    background: "#ffffff",
+    header: {
+      color: "#d84315",
+      background: "#fef7f0",
+      brand: {
+        color: "#ff6b35",
+      },
+    },
+    footer: {
+      color: "#d84315",
+      background: "#fef7f0",
+      online: {
+        background: "#2196f3",
+      },
+    },
+    badge: {
+      color: "#ffffff",
+      background: "#ff6b35",
+    },
+  },
+};
+
+export const eyeburningVariant: VariantType = {
+  name: Themes.Eyeburning,
+  fontFamily: "'Papyrus', 'Comic Sans MS', 'Brush Script MT', cursive",
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#ff0080",
+      contrastText: "#00ff00",
+    },
+    secondary: {
+      main: "#00ff00",
+      contrastText: "#ff0080",
+    },
+    background: {
+      default: "#000000",
+      paper: "#330066",
+    },
+    text: {
+      primary: "#ffff00",
+      secondary: "#ff00ff",
+    },
+  },
+  header: {
+    color: "#00ff00",
+    background: "#ff0080",
+    search: {
+      color: "#ffff00",
+    },
+    indicator: {
+      background: "rgba(255, 255, 0, 0.9)",
+    },
+  },
+  footer: {
+    color: "#ff00ff",
+    background: "#00ffff",
+  },
+  sidebar: {
+    color: "#ffff00",
+    background: "#ff0080",
+    header: {
+      color: "#ff0080",
+      background: "#00ff00",
+      brand: {
+        color: "#000000",
+      },
+    },
+    footer: {
+      color: "#00ff00",
+      background: "#ff00ff",
+      online: {
+        background: "#ffff00",
+      },
+    },
+    badge: {
+      color: "#000000",
+      background: "#00ffff",
+    },
+  },
+};
+
+export const halloweenVariant: VariantType = {
+  name: Themes.Halloween,
+  fontFamily: "'Playfair Display', 'Georgia', 'Times New Roman', serif",
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#ff8c00",
+      contrastText: "#000000",
+    },
+    secondary: {
+      main: "#ffa500",
+      contrastText: "#000000",
+    },
+    background: {
+      default: "#0d0d0d",
+      paper: "#1a1a1a",
+    },
+    text: {
+      primary: "#ffb347",
+      secondary: "#ff8c00",
+    },
+  },
+  header: {
+    color: "#ffb347",
+    background: "#1a1a1a",
+    search: {
+      color: "#ff8c00",
+    },
+    indicator: {
+      background: "rgba(255, 140, 0, 0.4)",
+    },
+  },
+  footer: {
+    color: "#ffb347",
+    background: "#1a1a1a",
+  },
+  sidebar: {
+    color: "#ffb347",
+    background: "#1a1a1a",
+    header: {
+      color: "#ffb347",
+      background: "#0d0d0d",
+      brand: {
+        color: "#ff8c00",
+      },
+    },
+    footer: {
+      color: "#ffb347",
+      background: "#0d0d0d",
+      online: {
+        background: "rgba(255, 140, 0, 0.7)",
+      },
+    },
+    badge: {
+      color: "#000000",
+      background: "#ff8c00",
+    },
+  },
+};
 
 const variants: VariantType[] = [
   minimalLightVariant,
@@ -430,6 +609,9 @@ const variants: VariantType[] = [
   purpleDarkVariant,
   matrixVariant,
   oceanVariant,
+  orangeBlueVariant,
+  eyeburningVariant,
+  halloweenVariant,
 ];
 
 export default variants;

@@ -6,4 +6,7 @@ export const Themes = {
   BlueLight: "Light Blue",
   GreenLight: "Light Green",
   PurpleDark: "Purple Dark",
+  Eyeburning: "Eyeburning",
+  Halloween: "Halloween",
+  OrangeBlue: "OrangeBlue",
 };

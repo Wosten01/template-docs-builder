@@ -1,5 +1,15 @@
-import React from "react";
-import { Box, Paper, Typography, Stack } from "@mui/material";
+import React, { useMemo } from "react";
+import {
+  Box,
+  Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Stack,
+  type SxProps,
+} from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
 import { InputField, ThemeSelector } from "../";
 
 interface SidebarProps {
@@ -9,8 +19,8 @@ interface SidebarProps {
   setServerIp: (value: string) => void;
   newUser: string;
   setNewUser: (value: string) => void;
-  sx?: object;
-  paperSx?: object;
+  sx?: SxProps;
+  paperSx?: SxProps;
 }
 
 export const Sidebar: React.FC<SidebarProps> = React.memo(
@@ -21,48 +31,78 @@ export const Sidebar: React.FC<SidebarProps> = React.memo(
     setServerIp,
     newUser,
     setNewUser,
-    sx = { flex: "0 0 280px" },
-    paperSx = {
-      p: { xs: 2, md: 3 },
-      borderRadius: 4,
-      background: "rgba(0,0,0,0.02)",
-      position: "sticky",
-      top: 20,
-      border: "1px solid rgba(0,0,0,0.05)",
-    },
-  }) => (
-    <Box sx={sx}>
-      <Paper elevation={3} sx={paperSx}>
-        <Typography
-          variant="h6"
-          fontWeight={600}
-          sx={{ mb: 3 }}
-          color="primary"
-        >
-          📝 Параметры сервера
-        </Typography>
+    sx,
+    paperSx,
+  }) => {
+    const sidebarContent = useMemo(
+      () => (
         <Stack spacing={3}>
-          <InputField
-            label="USERNAME"
-            value={username}
-            onChange={setUsername}
-            placeholder="например, root"
-          />
-          <InputField
-            label="SERVER_IP"
-            value={serverIp}
-            onChange={setServerIp}
-            placeholder="например, 1.2.3.4"
-          />
-          <InputField
-            label="NEWUSER"
-            value={newUser}
-            onChange={setNewUser}
-            placeholder="например, admin"
-          />
-          <ThemeSelector />
+          <Accordion defaultExpanded sx={{ borderRadius: 1, background: "rgba(0,0,0,0.02)" }}>
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography variant="subtitle1" fontWeight={600}>
+                📝 Параметры сервера
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Stack spacing={2}>
+                <InputField
+                  label="USERNAME"
+                  value={username}
+                  onChange={setUsername}
+                  placeholder="например, root"
+                />
+                <InputField
+                  label="SERVER_IP"
+                  value={serverIp}
+                  onChange={setServerIp}
+                  placeholder="например, 1.2.3.4"
+                />
+                <InputField
+                  label="NEWUSER"
+                  value={newUser}
+                  onChange={setNewUser}
+                  placeholder="например, admin"
+                />
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion
+            sx={{
+              "&::before": {
+                display: "none",
+              },
+              borderRadius: 1,
+              background: "rgba(0,0,0,0.02)",
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography variant="subtitle1" fontWeight={600}>
+                🎨 Настройки
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ThemeSelector />
+            </AccordionDetails>
+          </Accordion>
         </Stack>
-      </Paper>
-    </Box>
-  )
+      ),
+      [newUser, serverIp, setNewUser, setServerIp, setUsername, username]
+    );
+
+    return (
+      <Box
+        sx={{
+          position: "sticky",
+          top: 20,
+          alignSelf: "flex-start",
+          ...sx,
+        }}
+      >
+        <Paper elevation={3} sx={{ p: 2, ...paperSx }}>
+          {sidebarContent}
+        </Paper>
+      </Box>
+    );
+  }
 );

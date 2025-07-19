@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { Themes } from '../enums';
 
 type ThemeContextType = {
   theme: string;
@@ -6,7 +7,7 @@ type ThemeContextType = {
 };
 
 export const initialState: ThemeContextType = {
-  theme: "matrix",
+  theme: Themes.BlueLight,
   setTheme: () => {},
 };
 

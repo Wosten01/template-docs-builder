@@ -12,14 +12,15 @@ import {
   AccordionSummary,
   AccordionDetails,
   useTheme,
+  type SxProps,
 } from "@mui/material";
 import { PlayArrow, Pause, ExpandMore } from "@mui/icons-material";
 import { tips } from "../../configs";
 import { CommandBlock } from "../CommandBlock";
 
 interface InteractiveTipsPanelProps {
-  sx?: object;
-  accordionSx?: object;
+  sx?: SxProps;
+  accordionSx?: SxProps;
 }
 
 export const InteractiveTipsPanel: React.FC<InteractiveTipsPanelProps> = ({
@@ -36,7 +37,7 @@ export const InteractiveTipsPanel: React.FC<InteractiveTipsPanelProps> = ({
   const [currentTip, setCurrentTip] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [showTips, setShowTips] = useState(true);
+  const [showTips, setShowTips] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const muiTheme = useTheme();
 
@@ -66,11 +67,11 @@ export const InteractiveTipsPanel: React.FC<InteractiveTipsPanelProps> = ({
   };
 
   return (
-    <Box sx={sx}>
+       <Box sx={{...sx, position: "sticky", top: 20, alignSelf: "flex-start"}}>
       <Accordion
         expanded={showTips}
         onChange={() => setShowTips(!showTips)}
-        sx={accordionSx}
+        sx={accordionSx }
       >
         <AccordionSummary expandIcon={<ExpandMore />}>
           <Typography variant="h6">Интерактивные советы</Typography>
@@ -156,7 +157,7 @@ export const InteractiveTipsPanel: React.FC<InteractiveTipsPanelProps> = ({
                       <CommandBlock
                         key={idx}
                         text={cmd}
-                        sx={{ mb: 1, py: 1, px: 2}}
+                        sx={{ mb: 1, py: 1, px: 2 }}
                         size={"small"}
                       />
                     ))}

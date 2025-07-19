@@ -47,6 +47,7 @@ export const CommandGroup: React.FC<CommandGroupProps> = ({
   );
   return (
     <Accordion
+      id={`section-${group.replace(/\s+/g, "-").toLowerCase()}`}
       defaultExpanded
       sx={{
         mt: "0 !important",

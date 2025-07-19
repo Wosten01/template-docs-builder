@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Box, Typography, Stack } from "@mui/material";
-import { ContentContainer, InteractiveTipsPanel, Sidebar } from "./components";
+import { ContentContainer, ContentNavigation, Sidebar } from "./components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import createTheme from "./theme";
 import { useTheme } from "./hooks/use-theme.hook";
@@ -10,6 +10,7 @@ export const App: React.FC = () => {
   const [serverIp, setServerIp] = useState("");
   const [newUser, setNewUser] = useState("admin");
   const [copiedIdx, setCopiedIdx] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
   const muiTheme = createTheme(theme);
 
@@ -19,112 +20,119 @@ export const App: React.FC = () => {
     setTimeout(() => setCopiedIdx(null), 1200);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <MuiThemeProvider theme={muiTheme}>
       <Box
         sx={{
-          p: { xs: 1, sm: 2, md: 3, lg: 4 },
           minHeight: "100vh",
-          position: "relative",
+          width: "100vw",
           backgroundColor: muiTheme.palette.background.default,
-          maxWidth: "100vw",
-          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
         }}
       >
         <Box
           sx={{
-            mt: { xs: 2, sm: 4, md: 6 },
-            textAlign: "center",
-            mb: { xs: 3, sm: 4, md: 5 },
+            minHeight: "100vh",
+            position: "relative",
+            width: "100%",
+            backgroundColor: muiTheme.palette.background.default,
           }}
         >
-          <Typography
-            variant="h4"
-            fontWeight={700}
-            color="primary"
-            sx={{
-              mb: 1,
-              fontSize: { xs: "1.5rem", sm: "2rem", md: "2.125rem" },
-              px: { xs: 1, sm: 0 },
-            }}
-          >
-            🚀 Настройка VPS сервера
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            color="text.secondary"
-            sx={{
-              mb: { xs: 3, sm: 4, md: 5 },
-              fontSize: { xs: "0.875rem", sm: "1rem" },
-              px: { xs: 2, sm: 1, md: 0 },
-            }}
-          >
-            Быстрая настройка и конфигурация вашего VPS сервера
-          </Typography>
-        </Box>
-
-        <Stack
-          direction={{ xs: "column", lg: "row" }}
-          spacing={{ xs: 2, sm: 3, md: 3 }}
-          sx={{
-            alignItems: { xs: "stretch", lg: "flex-start" },
-            maxWidth: "100%",
-          }}
-        >
-          <Sidebar
-            username={username}
-            setUsername={setUsername}
-            serverIp={serverIp}
-            setServerIp={setServerIp}
-            newUser={newUser}
-            setNewUser={setNewUser}
-            sx={{
-              flex: "0 0 260px",
-              width: "260px",
-            }}
-            paperSx={{
-              p: { xs: 2, md: 3 },
-              borderRadius: 2,
-              position: { xs: "static", lg: "sticky" },
-              top: { lg: 20 },
-            }}
-          />
-
           <Box
             sx={{
-              px: 5,
-              flex: 1,
-              maxWidth: "1200px",
+              mt: { xs: 1, sm: 4, md: 6 },
+              textAlign: "center",
+              mb: { xs: 2, sm: 4, md: 5 },
             }}
           >
-            <ContentContainer
-              username={username}
-              serverIp={serverIp}
-              newUser={newUser}
-              copiedIdx={copiedIdx}
-              handleCopy={handleCopy}
-              sx={{ flex: 1 }}
-            />
+            <Typography
+              variant="h2"
+              fontWeight={700}
+              color="primary"
+              sx={{
+                mb: 1,
+                px: { xs: 1, sm: 0 },
+                fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
+              }}
+            >
+              🚀 Настройка VPS сервера
+            </Typography>
+            <Typography
+              variant="h4"
+              color="text.secondary"
+              sx={{
+                mb: { xs: 2, sm: 4, md: 5 },
+                px: { xs: 1, sm: 1, md: 0 },
+                fontSize: { xs: "1rem", sm: "1.2rem", md: "1.5rem" },
+              }}
+            >
+              Быстрая настройка и конфигурация вашего VPS сервера
+            </Typography>
           </Box>
-
-          <InteractiveTipsPanel
+          <Stack
+            direction={{ xs: "column", lg: "row" }}
             sx={{
-              flex: 1,
-              maxWidth: "300px",
-              display: { xs: "none", lg: "block" },
+              justifyContent: { lg: "space-around", xl: "center" },
+              alignItems: "flex-start",
             }}
-            accordionSx={{
-              borderRadius: 2,
-              px: 2,
-              py: 2,
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
-              backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              "&:before": { display: "none" },
-            }}
-          />
-        </Stack>
+          >
+            <ContentNavigation
+              sx={{
+                maxWidth: "250px",
+                display: { xs: "none", lg: "block" },
+              }}
+            />
+
+            <Box
+              sx={{
+                px: { xs: 1, sm: 3, md: 5 },
+                flex: 1,
+                maxWidth: "900px",
+              }}
+            >
+              <ContentContainer
+                title="⚡ Команды для выполнения"
+                username={username}
+                serverIp={serverIp}
+                newUser={newUser}
+                copiedIdx={copiedIdx}
+                handleCopy={handleCopy}
+                sx={{ flex: 1 }}
+              />
+            </Box>
+
+            <Sidebar
+              username={username}
+              setUsername={setUsername}
+              serverIp={serverIp}
+              setServerIp={setServerIp}
+              newUser={newUser}
+              setNewUser={setNewUser}
+              sx={{
+                flex: { xs: "none", lg: "0 0 260px" },
+                width: { xs: "100%", lg: "260px" },
+              }}
+              paperSx={{
+                mt: { xs: 0, lg: isScrolled ? 0 : 12 },
+                borderRadius: 1,
+                position: { xs: "static", lg: "sticky" },
+                top: { lg: 20 },
+                transition: "margin-top 0.3s ease",
+                background: "rgba(0,0,0,0.02)",
+              }}
+            />
+          </Stack>
+        </Box>
       </Box>
     </MuiThemeProvider>
   );

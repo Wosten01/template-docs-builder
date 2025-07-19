@@ -5,6 +5,7 @@ import {
   IconButton,
   Tooltip,
   useTheme,
+  type SxProps,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -14,7 +15,7 @@ interface CommandBlockProps {
   text: string;
   title?: string;
   description?: string;
-  sx?: object;
+  sx?: SxProps;
   size?: "small" | "medium" | "large";
 }
 

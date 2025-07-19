@@ -1,6 +1,6 @@
 import React from "react";
 import { FormControl, Select, MenuItem, Typography, Box } from "@mui/material";
-import { Code, Waves, Palette, Nature, AutoAwesome } from "@mui/icons-material";
+import { Code, Waves, Palette, Nature, AutoAwesome, Whatshot, LocalFireDepartment, Flag } from "@mui/icons-material";
 import variants from "../../theme/variants";
 import { useTheme } from "../../hooks/use-theme.hook";
 import { Themes } from "../../enums";
@@ -21,6 +21,14 @@ const getThemeIcon = (themeName: string) => {
       return <Nature sx={{ fontSize: 16, mr: 1, color: "#4caf50" }} />;
     case Themes.PurpleDark:
       return <AutoAwesome sx={{ fontSize: 16, mr: 1, color: "#a855f7" }} />;
+    case Themes.OrangeBlue:
+      return <Flag sx={{ fontSize: 16, mr: 1, color: "#ff6b35" }} />;
+    case Themes.Eyeburning:
+      return <Whatshot sx={{ fontSize: 16, mr: 1, color: "#ff0080" }} />;
+    case Themes.Halloween:
+      return (
+        <LocalFireDepartment sx={{ fontSize: 16, mr: 1, color: "#ff6600" }} />
+      );
     default:
       return <Palette sx={{ fontSize: 16, mr: 1 }} />;
   }
