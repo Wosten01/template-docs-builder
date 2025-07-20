@@ -1,6 +1,10 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { Box, Typography, Stack } from "@mui/material";
-import { ContentContainer, ContentNavigation, Sidebar } from "./components";
+import {
+  ContentContainer,
+  ContentNavigation,
+  TemplatesMenu,
+} from "./components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import createTheme from "./theme";
 import { useTheme } from "./hooks/use-theme.hook";
@@ -53,6 +57,7 @@ export const App: React.FC = () => {
               mt: { xs: 1, sm: 4, md: 6 },
               textAlign: "center",
               mb: { xs: 2, sm: 4, md: 5 },
+              display: { xs: "none", md: "block" },
             }}
           >
             <Typography
@@ -79,17 +84,22 @@ export const App: React.FC = () => {
               Быстрая настройка и конфигурация вашего VPS сервера
             </Typography>
           </Box>
+
           <Stack
             direction={{ xs: "column", lg: "row" }}
             sx={{
-              justifyContent: { lg: "space-around", xl: "center" },
+              justifyContent: {
+                xs: "center",
+                lg: "space-between",
+                xl: "center",
+              },
               alignItems: "flex-start",
             }}
           >
             <ContentNavigation
               sx={{
                 maxWidth: "250px",
-                display: { xs: "none", lg: "block" },
+                display: { xs: "none", md: "none", lg: "block" },
               }}
             />
 
@@ -97,7 +107,8 @@ export const App: React.FC = () => {
               sx={{
                 px: { xs: 1, sm: 3, md: 5 },
                 flex: 1,
-                maxWidth: "900px",
+                maxWidth: { xs: "100%", md: "800px" },
+                mx: { xs: "auto", lg: 0 },
               }}
             >
               <ContentContainer
@@ -111,7 +122,7 @@ export const App: React.FC = () => {
               />
             </Box>
 
-            <Sidebar
+            <TemplatesMenu
               username={username}
               setUsername={setUsername}
               serverIp={serverIp}
@@ -121,6 +132,7 @@ export const App: React.FC = () => {
               sx={{
                 flex: { xs: "none", lg: "0 0 260px" },
                 width: { xs: "100%", lg: "260px" },
+                display: { xs: "none", md: "none", lg: "block" },
               }}
               paperSx={{
                 mt: { xs: 0, lg: isScrolled ? 0 : 12 },

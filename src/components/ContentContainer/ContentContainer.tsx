@@ -39,9 +39,11 @@ export const ContentContainer: React.FC<Props> = React.memo(
         <Typography
           variant="h5"
           fontWeight={600}
-          sx={{ mb: 4,
-
-            
+          sx={{
+            mb: 4,
+            justifyContent: {
+              xs: "center",
+            },
           }}
           color="primary"
         >

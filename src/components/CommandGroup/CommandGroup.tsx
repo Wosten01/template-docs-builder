@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Typography, Stack, Accordion, Box, Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import type { Command } from "../../configs";
@@ -45,9 +45,15 @@ export const CommandGroup: React.FC<CommandGroupProps> = ({
       }),
     [commands, groupIdx, newUser, serverIp, username]
   );
+
+  const accordionId = useCallback(
+    () => `section-${group.replace(/\s+/g, "-").toLowerCase()}`,
+    [group]
+  );
+
   return (
     <Accordion
-      id={`section-${group.replace(/\s+/g, "-").toLowerCase()}`}
+      id={accordionId()}
       defaultExpanded
       sx={{
         mt: "0 !important",

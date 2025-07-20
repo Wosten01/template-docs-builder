@@ -10,9 +10,9 @@ import {
   type SxProps,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { InputField, ThemeSelector } from "../";
+import { InputField, ThemeSelector } from "..";
 
-interface SidebarProps {
+interface Props {
   username: string;
   setUsername: (value: string) => void;
   serverIp: string;
@@ -23,7 +23,7 @@ interface SidebarProps {
   paperSx?: SxProps;
 }
 
-export const Sidebar: React.FC<SidebarProps> = React.memo(
+export const TemplatesMenu: React.FC<Props> = React.memo(
   ({
     username,
     setUsername,
