@@ -1,6 +1,15 @@
 import React from "react";
 import { FormControl, Select, MenuItem, Typography, Box } from "@mui/material";
-import { Code, Waves, Palette, Nature, AutoAwesome, Whatshot, LocalFireDepartment, Flag } from "@mui/icons-material";
+import {
+  Code,
+  Waves,
+  Palette,
+  Nature,
+  AutoAwesome,
+  Whatshot,
+  LocalFireDepartment,
+  Flag,
+} from "@mui/icons-material";
 import variants from "../../theme/variants";
 import { useTheme } from "../../hooks/use-theme.hook";
 import { Themes } from "../../enums";
@@ -34,15 +43,21 @@ const getThemeIcon = (themeName: string) => {
   }
 };
 
-export const ThemeSelector: React.FC = () => {
+interface Props {
+  title?: string;
+}
+
+export const ThemeSelector: React.FC<Props> = ({ title }: Props) => {
   const { theme, setTheme } = useTheme();
 
   return (
     <Box sx={{ top: 16, right: 16, minWidth: 140 }}>
       <FormControl size="small" fullWidth>
-        <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5 }}>
-          Тема
-        </Typography>
+        {title && (
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5 }}>
+            {title}
+          </Typography>
+        )}
         <Select
           sx={{
             "& .MuiOutlinedInput-notchedOutline": {

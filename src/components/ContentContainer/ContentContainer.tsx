@@ -40,16 +40,24 @@ export const ContentContainer: React.FC<Props> = React.memo(
           variant="h5"
           fontWeight={600}
           sx={{
-            mb: 4,
-            justifyContent: {
-              xs: "center",
-            },
+            p: { lg: 0, xs: 5 },
+            mb: { lg: 4, xs: 0 },
+            textAlign: { xs: "center", lg: "left" },
           }}
           color="primary"
         >
           {title}
         </Typography>
-        <Stack>{commandGroups}</Stack>
+        <Stack
+          sx={{
+            justifyContent: {
+              xs: "center",
+            },
+            p: { xs: 3, lg:0 },
+          }}
+        >
+          {commandGroups}
+        </Stack>
       </Box>
     );
   }

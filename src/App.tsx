@@ -1,13 +1,10 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { Box, Typography, Stack } from "@mui/material";
-import {
-  ContentContainer,
-  ContentNavigation,
-  TemplatesMenu,
-} from "./components";
+import { Box, Stack } from "@mui/material";
+import { ContentContainer, ContentNavigation, Drawer } from "./components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import createTheme from "./theme";
 import { useTheme } from "./hooks/use-theme.hook";
+import { MainAppBar, TemplatesMenu } from "./features";
 
 export const App: React.FC = () => {
   const [username, setUsername] = useState("root");
@@ -17,6 +14,7 @@ export const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
   const muiTheme = createTheme(theme);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleCopy = useCallback((cmd: string, id: string) => {
     navigator.clipboard.writeText(cmd.trim());
@@ -52,38 +50,7 @@ export const App: React.FC = () => {
             backgroundColor: muiTheme.palette.background.default,
           }}
         >
-          <Box
-            sx={{
-              mt: { xs: 1, sm: 4, md: 6 },
-              textAlign: "center",
-              mb: { xs: 2, sm: 4, md: 5 },
-              display: { xs: "none", md: "block" },
-            }}
-          >
-            <Typography
-              variant="h2"
-              fontWeight={700}
-              color="primary"
-              sx={{
-                mb: 1,
-                px: { xs: 1, sm: 0 },
-                fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
-              }}
-            >
-              🚀 Настройка VPS сервера
-            </Typography>
-            <Typography
-              variant="h4"
-              color="text.secondary"
-              sx={{
-                mb: { xs: 2, sm: 4, md: 5 },
-                px: { xs: 1, sm: 1, md: 0 },
-                fontSize: { xs: "1rem", sm: "1.2rem", md: "1.5rem" },
-              }}
-            >
-              Быстрая настройка и конфигурация вашего VPS сервера
-            </Typography>
-          </Box>
+          <MainAppBar onMenuClick={() => setDrawerOpen(!drawerOpen)} />
 
           <Stack
             direction={{ xs: "column", lg: "row" }}
@@ -107,7 +74,8 @@ export const App: React.FC = () => {
               sx={{
                 px: { xs: 1, sm: 3, md: 5 },
                 flex: 1,
-                maxWidth: { xs: "100%", md: "800px" },
+                maxWidth: { xs: "100%", lg: "800px" },
+                width: { xs: "100%" },
                 mx: { xs: "auto", lg: 0 },
               }}
             >
@@ -143,6 +111,23 @@ export const App: React.FC = () => {
                 background: "rgba(0,0,0,0.02)",
               }}
             />
+
+            <Drawer
+              open={drawerOpen}
+              onToggle={() => setDrawerOpen(!drawerOpen)}
+              showMenuButton={false}
+            >
+              <TemplatesMenu
+                username={username}
+                setUsername={setUsername}
+                serverIp={serverIp}
+                setServerIp={setServerIp}
+                newUser={newUser}
+                setNewUser={setNewUser}
+                sx={{ position: "static" }}
+                paperSx={{ elevation: 0, boxShadow: "none" }}
+              />
+            </Drawer>
           </Stack>
         </Box>
       </Box>

@@ -10,7 +10,7 @@ import {
   type SxProps,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { InputField, ThemeSelector } from "..";
+import { InputField, ThemeSelector } from "../../components";
 
 interface Props {
   username: string;
@@ -82,7 +82,7 @@ export const TemplatesMenu: React.FC<Props> = React.memo(
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <ThemeSelector />
+              <ThemeSelector title="Teма"/>
             </AccordionDetails>
           </Accordion>
         </Stack>
