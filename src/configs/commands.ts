@@ -1,9 +1,11 @@
-export type CommandTemplate = (username: string, serverIp: string, newUser: string) => string;
+import type { FormFieldsState } from './form-fields';
+
+export type CommandTemplate = (fields: FormFieldsState) => string;
 
 export interface Command {
   title: string;
   description?: string;
-  template: CommandTemplate;
+  code: CommandTemplate;
 }
 
 export interface CommandGroup {
@@ -11,36 +13,53 @@ export interface CommandGroup {
   commands: Command[];
 }
 
-export const commandsConfig: CommandGroup[] = [
+const parseTemplate = (templateString: string): CommandTemplate => {
+  return (fields: FormFieldsState) => {
+    return templateString.replace(/\{(\w+)\}/g, (match, fieldName) => {
+      return fields[fieldName as keyof FormFieldsState] || match;
+    });
+  };
+};
+
+const commandsConfigRaw = [
   {
     group: "Основные",
     commands: [
-      { title: "Подключение к серверу", template: (u, ip) => `ssh ${u}@${ip}` },
-      { title: "Обновление системы", template: () => "sudo apt update && sudo apt upgrade -y" },
-      { title: "Создание нового пользователя и добавление в sudo", template: (_u, _ip, nu) => `adduser ${nu}\nusermod -aG sudo ${nu}` },
+      { title: "Подключение к серверу", code: "ssh {username}@{serverIp}" },
+      { title: "Обновление системы", code: "sudo apt update && sudo apt upgrade -y" },
+      { title: "Создание нового пользователя и добавление в sudo", code: "adduser {newUser}\nusermod -aG sudo {newUser}" },
     ],
   },
   {
     group: "Настройка SSH",
     commands: [
-      { title: "Редактирование конфигурации SSH", template: () => "sudo nano /etc/ssh/sshd_config" },
-      { title: "Перезапуск SSH", template: () => "sudo systemctl restart ssh" },
+      { title: "Редактирование конфигурации SSH", code: "sudo nano /etc/ssh/sshd_config" },
+      { title: "Перезапуск SSH", code: "sudo systemctl restart ssh" },
     ],
   },
   {
     group: "Брандмауэр (UFW)",
     commands: [
-      { title: "Установка UFW", template: () => "sudo apt install ufw -y" },
-      { title: "Разрешить OpenSSH", template: () => "sudo ufw allow OpenSSH" },
-      { title: "Включить UFW", template: () => "sudo ufw enable" },
-      { title: "Проверить статус UFW", template: () => "sudo ufw status" },
+      { title: "Установка UFW", code: "sudo apt install ufw -y" },
+      { title: "Разрешить OpenSSH", code: "sudo ufw allow OpenSSH" },
+      { title: "Включить UFW", code: "sudo ufw enable" },
+      { title: "Проверить статус UFW", code: "sudo ufw status" },
     ],
   },
   {
     group: "SSH ключи",
     commands: [
-      { title: "Создать SSH-ключ (на локальной машине)", template: () => "ssh-keygen" },
-      { title: "Копировать SSH-ключ на сервер", template: (u, ip) => `ssh-copy-id ${u}@${ip}` },
+      { title: "Создать SSH-ключ (на локальной машине)", code: "ssh-keygen" },
+      { title: "Копировать SSH-ключ на сервер", code: "ssh-copy-id {username}@{serverIp}" },
     ],
   },
 ];
+
+
+export const commandsConfig: CommandGroup[] = commandsConfigRaw.map(group => ({
+  ...group,
+  commands: group.commands.map(cmd => ({
+    ...cmd,
+    code: parseTemplate(cmd.code)
+  }))
+}));

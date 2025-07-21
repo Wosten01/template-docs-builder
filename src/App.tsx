@@ -1,26 +1,18 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Stack } from "@mui/material";
 import { ContentContainer, ContentNavigation, Drawer } from "./components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import createTheme from "./theme";
 import { useTheme } from "./hooks/use-theme.hook";
 import { MainAppBar, TemplatesMenu } from "./features";
+import { FormFieldsProvider } from "./context";
 
 export const App: React.FC = () => {
-  const [username, setUsername] = useState("root");
-  const [serverIp, setServerIp] = useState("");
-  const [newUser, setNewUser] = useState("admin");
-  const [copiedIdx, setCopiedIdx] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
   const muiTheme = createTheme(theme);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleCopy = useCallback((cmd: string, id: string) => {
-    navigator.clipboard.writeText(cmd.trim());
-    setCopiedIdx(id);
-    setTimeout(() => setCopiedIdx(null), 1200);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +25,7 @@ export const App: React.FC = () => {
 
   return (
     <MuiThemeProvider theme={muiTheme}>
+      <FormFieldsProvider>
       <Box
         sx={{
           minHeight: "100vh",
@@ -74,29 +67,18 @@ export const App: React.FC = () => {
               sx={{
                 px: { xs: 1, sm: 3, md: 5 },
                 flex: 1,
-                maxWidth: { xs: "100%", lg: "800px" },
+                maxWidth: { xs: "100%", lg: "1200px" },
                 width: { xs: "100%" },
                 mx: { xs: "auto", lg: 0 },
               }}
             >
               <ContentContainer
                 title="⚡ Команды для выполнения"
-                username={username}
-                serverIp={serverIp}
-                newUser={newUser}
-                copiedIdx={copiedIdx}
-                handleCopy={handleCopy}
                 sx={{ flex: 1 }}
               />
             </Box>
 
             <TemplatesMenu
-              username={username}
-              setUsername={setUsername}
-              serverIp={serverIp}
-              setServerIp={setServerIp}
-              newUser={newUser}
-              setNewUser={setNewUser}
               sx={{
                 flex: { xs: "none", lg: "0 0 260px" },
                 width: { xs: "100%", lg: "260px" },
@@ -118,12 +100,6 @@ export const App: React.FC = () => {
               showMenuButton={false}
             >
               <TemplatesMenu
-                username={username}
-                setUsername={setUsername}
-                serverIp={serverIp}
-                setServerIp={setServerIp}
-                newUser={newUser}
-                setNewUser={setNewUser}
                 sx={{ position: "static" }}
                 paperSx={{ elevation: 0, boxShadow: "none" }}
               />
@@ -131,6 +107,7 @@ export const App: React.FC = () => {
           </Stack>
         </Box>
       </Box>
+      </FormFieldsProvider>
     </MuiThemeProvider>
   );
 };

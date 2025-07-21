@@ -3,36 +3,26 @@ import { Typography, Stack, Accordion, Box, Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import type { Command } from "../../configs";
 import { CommandBlock } from "../CommandBlock";
+import { useFormFieldsContext } from "../../context";
 
 interface CommandGroupProps {
   group: string;
   commands: Command[];
-  username: string;
-  serverIp: string;
-  newUser: string;
-  copiedIdx: string | null;
-  handleCopy: (cmd: string, id: string) => void;
   groupIdx: number;
 }
 
 export const CommandGroup: React.FC<CommandGroupProps> = ({
   group,
   commands,
-  username,
-  serverIp,
-  newUser,
   groupIdx,
 }) => {
   const [expanded, setExpanded] = React.useState(true);
+  const { fields } = useFormFieldsContext();
 
   const renderItems = useMemo(
     () =>
       commands.map((cmd, cIdx) => {
-        const cmdText = cmd.template(
-          username || "{USERNAME}",
-          serverIp || "{SERVER_IP}",
-          newUser || "{NEWUSER}"
-        );
+        const cmdText = cmd.code(fields);
         const id = `${groupIdx}-${cIdx}`;
         return (
           <CommandBlock
@@ -43,7 +33,7 @@ export const CommandGroup: React.FC<CommandGroupProps> = ({
           />
         );
       }),
-    [commands, groupIdx, newUser, serverIp, username]
+    [commands, fields, groupIdx]
   );
 
   const accordionId = useCallback(

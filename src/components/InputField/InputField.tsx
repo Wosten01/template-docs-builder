@@ -1,5 +1,5 @@
-import React from "react";
 import { Typography, TextField } from "@mui/material";
+import { useDeferredInput } from "../../hooks";
 
 interface InputFieldProps {
   label: string;
@@ -13,28 +13,32 @@ export const InputField: React.FC<InputFieldProps> = ({
   value,
   onChange,
   placeholder,
-}) => (
-  <div>
-    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-      {label}
-    </Typography>
-    <TextField
-      value={value}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-        onChange(e.target.value)
-      }
-      placeholder={placeholder}
-      size="small"
-      fullWidth
-      variant="outlined"
-      sx={{
-        "& .MuiOutlinedInput-root": {
-          "& fieldset": {
-            borderColor: "primary.main",
-            borderWidth: "1px",
-          }
-        },
-      }}
-    />
-  </div>
-);
+}) => {
+  const { localValue, setLocalValue } = useDeferredInput(value, onChange);
+
+  return (
+    <div>
+      <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+        {label}
+      </Typography>
+      <TextField
+        value={localValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setLocalValue(e.target.value)
+        }
+        placeholder={placeholder}
+        size="small"
+        fullWidth
+        variant="outlined"
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "primary.main",
+              borderWidth: "1px",
+            },
+          },
+        }}
+      />
+    </div>
+  );
+};

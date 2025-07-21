@@ -1,0 +1,20 @@
+[
+  {
+    "key": "username",
+    "label": "USERNAME",
+    "defaultValue": "root",
+    "placeholder": "например, root"
+  },
+  {
+    "key": "serverIp",
+    "label": "SERVER_IP", 
+    "defaultValue": "192.x.x.x",
+    "placeholder": "например, 1.2.3.4"
+  },
+  {
+    "key": "newUser",
+    "label": "NEWUSER",
+    "defaultValue": "admin", 
+    "placeholder": "например, admin"
+  }
+]
