@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { PlayArrow, Pause, ExpandMore } from "@mui/icons-material";
 import { tips } from "../../configs";
-import { CommandBlock } from "../CommandBlock";
+import { CommandBlock } from "../Block";
 
 interface InteractiveTipsPanelProps {
   sx?: SxProps;

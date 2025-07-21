@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Box, Typography, Stack, type SxProps } from "@mui/material";
-import { CommandGroup } from "../CommandGroup";
+import { BlocksGroup } from "../BlocksGroup";
 import { commandsConfig } from "../../configs";
 
 interface Props {
@@ -14,10 +14,10 @@ export const ContentContainer: React.FC<Props> = React.memo(
     const commandGroups = useMemo(
       () =>
         commandsConfig.map((group, gIdx) => (
-          <CommandGroup
+          <BlocksGroup
             key={group.group}
             group={group.group}
-            commands={group.commands}
+            block={group.commands}
             groupIdx={gIdx}
           />
         )),

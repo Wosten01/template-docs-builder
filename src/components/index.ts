@@ -1,5 +1,5 @@
-export * from "./CommandBlock"
-export * from "./CommandGroup"
+export * from "./Block"
+export * from "./BlocksGroup"
 export * from "./InputField"
 export * from "./ThemeSelector"
 export * from "./ContentContainer"
