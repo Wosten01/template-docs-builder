@@ -10,9 +10,12 @@ export const useCopy = () => {
     setTimeout(() => setCopiedId(null), 1200);
   }, []);
 
-  const isCopied = useCallback((id: string) => {
-    return copiedId === id;
-  }, [copiedId]);
+  const isCopied = useCallback(
+    (id: string) => {
+      return copiedId === id;
+    },
+    [copiedId]
+  );
 
   return { handleCopy, isCopied };
 };

@@ -20,7 +20,7 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
       >
         <Typography
           variant="h2"
-          fontWeight={700}
+          fontWeight={800}
           color="primary"
           sx={{
             mb: 1,
@@ -50,7 +50,6 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
           zIndex: 1000,
         }}
         title={"🚀 Настройка VPS сервера"}
-        // menu={<ThemeSelector />}
         onClick={onBurgerClick}
       />
     </Fragment>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   formFieldsConfig,
   type FormFieldsState,
@@ -18,7 +18,8 @@ export const useFormFields = () => {
 
   const [fields, setFields] = useState<FormFieldsState>(() => {
     const cached = localStorage.getItem(CACHE_KEY);
-    return cached ? JSON.parse(cached) : initialValues;
+    const cachedValues = cached ? JSON.parse(cached) : {};
+    return { ...initialValues, ...cachedValues };
   });
 
   const setters = useMemo(() => {
@@ -36,6 +37,11 @@ export const useFormFields = () => {
     }, {} as FormFieldsSetters);
   }, []);
 
+  const resetToDefaults = useCallback(() => {
+    setFields(initialValues);
+    localStorage.removeItem(CACHE_KEY);
+  }, [initialValues]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       localStorage.setItem(CACHE_KEY, JSON.stringify(fields));
@@ -45,8 +51,10 @@ export const useFormFields = () => {
   }, [fields]);
 
   return {
+    initialValues,
     fields,
     setters,
     config: formFieldsConfig,
+    resetToDefaults,
   };
 };

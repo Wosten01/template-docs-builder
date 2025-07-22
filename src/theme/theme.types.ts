@@ -14,6 +14,7 @@ export type VariantType = {
   palette: {
     mode: "dark" | "light";
     primary: MainContrastTextType;
+    warning: MainContrastTextType;
     secondary: MainContrastTextType;
     background: {
       default: string;

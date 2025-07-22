@@ -1,37 +1,47 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Typography, Stack, Accordion, Box, Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import type { Command as block } from "../../configs";
-import { CommandBlock } from "../Block";
+import type { Block as block, StepItem } from "../../configs";
+import { Block } from "../Block";
 import { useFormFieldsContext } from "../../context";
 
 interface Props {
   group: string;
-  block: block[];
+  blocks: block[];
   groupIdx: number;
 }
 
-export const BlocksGroup: React.FC<Props> = ({
-  group,
-  block: blocks,
-  groupIdx,
-}) => {
+export const BlocksGroup: React.FC<Props> = ({ group, blocks, groupIdx }) => {
   const [expanded, setExpanded] = React.useState(true);
   const { fields } = useFormFieldsContext();
 
-  const renderItems = blocks.map((block, idx) => {
-    const id = `${groupIdx}-${idx}`;
-    return (
-      <CommandBlock
-        key={id}
-        code={block.code?.(fields)}
-        steps={block.steps}
-        note={block.note}
-        title={block.title}
-        description={block.description}
-      />
-    );
-  });
+  const renderItems = useMemo(
+    () =>
+      blocks.map((block, idx) => {
+        const id = `${groupIdx}-${idx}`;
+        console.log(block.code?.(fields))
+        return (
+          <Block
+            key={id}
+            code={block.code?.(fields)}
+            steps={block.steps?.map((step): StepItem => {
+              const result = step(fields);
+              if (typeof result === "string") {
+                return result;
+              }
+              return {
+                text: result.text,
+                code: result.code,
+              };
+            })}
+            note={block.note?.(fields)}
+            title={block.title}
+            description={block.description}
+          />
+        );
+      }),
+    [blocks, fields, groupIdx]
+  );
 
   const accordionId = useCallback(
     () => `section-${group.replace(/\s+/g, "-").toLowerCase()}`,
@@ -71,7 +81,7 @@ export const BlocksGroup: React.FC<Props> = ({
             transition: "transform 0.2s ease",
           }}
         />
-        <Typography variant="h4" color="primary" sx={{ fontWeight: 500 }}>
+        <Typography variant="h5" color="primary" sx={{ fontWeight: 500 }}>
           {group}
         </Typography>
       </Box>

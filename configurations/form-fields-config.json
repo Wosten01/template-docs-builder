@@ -1,20 +1,50 @@
 [
   {
-    "key": "username",
-    "label": "USERNAME",
+    "key": "root",
+    "label": "rootName",
     "defaultValue": "root",
     "placeholder": "например, root"
   },
   {
     "key": "serverIp",
-    "label": "SERVER_IP", 
+    "label": "SERVER_IP",
     "defaultValue": "192.x.x.x",
     "placeholder": "например, 1.2.3.4"
   },
   {
-    "key": "newUser",
-    "label": "NEWUSER",
-    "defaultValue": "admin", 
+    "key": "username",
+    "label": "USERNAME",
+    "defaultValue": "admin",
     "placeholder": "например, admin"
+  },
+  {
+    "key": "ssh_comment",
+    "label": "ssh_comment",
+    "defaultValue": "asdas",
+    "placeholder": "~/.ssh/folder/id_ed25519_name"
+  },
+  {
+    "key": "ssh_path_to_key",
+    "label": "ssh_path_to_key",
+    "defaultValue": "~/.ssh/id_ed25519",
+    "placeholder": "~/.ssh/folder/id_ed25519_name"
+  },
+  {
+    "key": "ssh_path_to_pub_key",
+    "label": "ssh_path_to_pub_key",
+    "defaultValue": "~/.ssh/id_ecdsa.pub",
+    "placeholder": "~/.ssh/folder/id_ecdsa.pub"
+  },
+  {
+    "key": "host_name",
+    "label": "host_name",
+    "defaultValue": "host",
+    "placeholder": "host_name"
+  },
+   {
+    "key": "ssh_port",
+    "label": "ssh_port",
+    "defaultValue": "61213",
+    "placeholder": "host_name"
   }
 ]

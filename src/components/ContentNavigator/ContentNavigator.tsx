@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Typography, Paper, Tabs, Tab, type SxProps } from '@mui/material';
-import { commandsConfig } from '../../configs/commands';
+import { blocksConfig } from '../../configs/blocks';
 
 interface ContentNavigationProps {
   sx?: SxProps;
@@ -72,7 +72,7 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({ sx, onSect
             },
           }}
         >
-          {commandsConfig.map((group, index) => (
+          {blocksConfig.map((group, index) => (
             <Tab
               key={index}
               label={group.group}

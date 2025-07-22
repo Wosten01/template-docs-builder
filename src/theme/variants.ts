@@ -10,6 +10,10 @@ export const matrixVariant: VariantType = {
       main: "#00ff88",
       contrastText: "#000000",
     },
+    warning: {
+      main: "#80FCAB",
+      contrastText: "#000000",
+    },
     secondary: {
       main: "#ffffff",
       contrastText: "#00ff88",
@@ -68,6 +72,10 @@ export const oceanVariant: VariantType = {
     mode: "dark",
     primary: {
       main: "#00d4ff",
+      contrastText: "#000000",
+    },
+    warning: {
+      main: "#B4F3FE",
       contrastText: "#000000",
     },
     secondary: {
@@ -130,6 +138,10 @@ export const minimalLightVariant: VariantType = {
       main: "#666666",
       contrastText: "#ffffff",
     },
+    warning: {
+      main: "#4B2E02",
+      contrastText: "#ffffff",
+    },
     secondary: {
       main: "#333333",
       contrastText: "#ffffff",
@@ -188,6 +200,10 @@ export const minimalDarkVariant: VariantType = {
     mode: "dark",
     primary: {
       main: "#e0e0e0",
+      contrastText: "#000000",
+    },
+    warning: {
+      main: "#F5AD5A",
       contrastText: "#000000",
     },
     secondary: {
@@ -250,6 +266,10 @@ export const blueLightVariant: VariantType = {
       main: "#6366f1",
       contrastText: "#ffffff",
     },
+    warning: {
+      main: "#00A8C6",
+      contrastText: "#ffffff",
+    },
     secondary: {
       main: "#ec4899",
       contrastText: "#ffffff",
@@ -308,6 +328,10 @@ export const greenLightVariant: VariantType = {
     mode: "light",
     primary: {
       main: "#4caf50",
+      contrastText: "#ffffff",
+    },
+    warning: {
+      main: "#F4BE6E",
       contrastText: "#ffffff",
     },
     secondary: {
@@ -370,6 +394,10 @@ export const purpleDarkVariant: VariantType = {
       main: "#a855f7",
       contrastText: "#ffffff",
     },
+    warning: {
+      main: "#fbbf24",
+      contrastText: "#000000",
+    },
     secondary: {
       main: "#c084fc",
       contrastText: "#000000",
@@ -428,6 +456,10 @@ export const orangeBlueVariant: VariantType = {
     mode: "light",
     primary: {
       main: "#ff6b35",
+      contrastText: "#ffffff",
+    },
+    warning: {
+      main: "#1976d2",
       contrastText: "#ffffff",
     },
     secondary: {
@@ -490,6 +522,10 @@ export const eyeburningVariant: VariantType = {
       main: "#ff0080",
       contrastText: "#00ff00",
     },
+    warning: {
+      main: "#00ffff",
+      contrastText: "#ff0080",
+    },
     secondary: {
       main: "#00ff00",
       contrastText: "#ff0080",
@@ -548,6 +584,10 @@ export const halloweenVariant: VariantType = {
     mode: "dark",
     primary: {
       main: "#ff8c00",
+      contrastText: "#000000",
+    },
+    warning: {
+      main: "#ffa500",
       contrastText: "#000000",
     },
     secondary: {

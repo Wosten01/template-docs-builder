@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   Box,
   Paper,
@@ -8,6 +8,7 @@ import {
   Typography,
   Stack,
   type SxProps,
+  Button,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { InputField, ThemeSelector } from "../../components";
@@ -18,8 +19,12 @@ interface Props {
   paperSx?: SxProps;
 }
 
-export const TemplatesMenu: React.FC<Props> = (({ sx, paperSx }) => {
-  const { fields, setters, config } = useFormFieldsContext();
+export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
+  const { fields, setters, config, resetToDefaults  } = useFormFieldsContext();
+
+  const handleReset = useCallback(() => {
+    resetToDefaults();
+  },[resetToDefaults])
 
   const content = useMemo(
     () => (
@@ -52,6 +57,15 @@ export const TemplatesMenu: React.FC<Props> = (({ sx, paperSx }) => {
                   />
                 );
               })}
+              <Button
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                onClick={handleReset}
+                sx={{ mt: 2 }}
+              >
+                🔄 Сбросить к дефолтным значениям
+              </Button>
             </Stack>
           </AccordionDetails>
         </Accordion>
@@ -76,7 +90,7 @@ export const TemplatesMenu: React.FC<Props> = (({ sx, paperSx }) => {
         </Accordion>
       </Stack>
     ),
-    [fields, setters, config]
+    [config, handleReset, fields, setters]
   );
 
   return (
@@ -93,4 +107,4 @@ export const TemplatesMenu: React.FC<Props> = (({ sx, paperSx }) => {
       </Paper>
     </Box>
   );
-});
+};

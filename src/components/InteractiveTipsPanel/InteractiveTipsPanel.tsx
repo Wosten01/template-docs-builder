@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { PlayArrow, Pause, ExpandMore } from "@mui/icons-material";
 import { tips } from "../../configs";
-import { CommandBlock } from "../Block";
+import { Block } from "../Block";
 
 interface InteractiveTipsPanelProps {
   sx?: SxProps;
@@ -154,7 +154,7 @@ export const InteractiveTipsPanel: React.FC<InteractiveTipsPanelProps> = ({
                       Полезные команды:
                     </Typography>
                     {tips[currentTip].commands?.map((cmd, idx) => (
-                      <CommandBlock
+                      <Block
                         key={idx}
                         text={cmd}
                         sx={{ mb: 1, py: 1, px: 2 }}
