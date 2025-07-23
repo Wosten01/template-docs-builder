@@ -28,7 +28,7 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
 
   const content = useMemo(
     () => (
-      <Stack spacing={3}>
+      <Stack spacing={2}>
         <Accordion
           defaultExpanded
           sx={{ borderRadius: 1, background: "rgba(0,0,0,0.02)" }}
@@ -38,7 +38,7 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
               📝 Параметры сервера
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
+           <AccordionDetails sx={{ p: 0, m:0 }}>
             <Stack spacing={2}>
               {config.map((field) => {
                 return (
@@ -59,10 +59,9 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
               })}
               <Button
                 variant="outlined"
-                color="secondary"
+                color="primary"
                 fullWidth
                 onClick={handleReset}
-                sx={{ mt: 2 }}
               >
                 🔄 Сбросить к дефолтным значениям
               </Button>
@@ -84,7 +83,7 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
               🎨 Настройки
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails >
             <ThemeSelector title="Teма" />
           </AccordionDetails>
         </Accordion>
@@ -102,7 +101,7 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
         ...sx,
       }}
     >
-      <Paper elevation={3} sx={{ p: 2, ...paperSx }}>
+      <Paper elevation={3} sx={{ px: 2, ...paperSx }}>
         {content}
       </Paper>
     </Box>

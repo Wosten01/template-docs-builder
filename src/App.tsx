@@ -6,6 +6,7 @@ import createTheme from "./theme";
 import { useTheme } from "./hooks/use-theme.hook";
 import { MainAppBar, TemplatesMenu } from "./features";
 import { FormFieldsProvider } from "./context";
+import { BrowserRouter } from "react-router-dom";
 
 export const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,12 +34,29 @@ export const App: React.FC = () => {
 
   const templatesMenuPaperSx = useMemo(
     () => ({
+      py: 2,
       mt: { xs: 0, lg: isScrolled ? 0 : 12 },
       borderRadius: 1,
       position: { xs: "static", lg: "sticky" },
       top: { lg: 20 },
       transition: "margin-top 0.3s ease",
-      background: "rgba(0,0,0,0.02)",
+      backdropFilter: "blur(10px)",
+      maxHeight: "80vh",
+      overflow: "auto",
+      "&::-webkit-scrollbar": {
+        width: "6px",
+      },
+      "&::-webkit-scrollbar-track": {
+        background: "rgba(0,0,0,0.1)",
+        borderRadius: "3px",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        background: "rgba(0,0,0,0.3)",
+        borderRadius: "3px",
+        "&:hover": {
+          background: "rgba(0,0,0,0.5)",
+        },
+      },
     }),
     [isScrolled]
   );
@@ -62,6 +80,24 @@ export const App: React.FC = () => {
     () => ({
       maxWidth: "250px",
       display: { xs: "none", md: "none", lg: "block" },
+      "& > div": {
+        maxHeight: "80vh",
+        overflow: "auto",
+        "&::-webkit-scrollbar": {
+          width: "6px",
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "rgba(0,0,0,0.1)",
+          borderRadius: "3px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "rgba(0,0,0,0.3)",
+          borderRadius: "3px",
+          "&:hover": {
+            background: "rgba(0,0,0,0.5)",
+          },
+        },
+      },
     }),
     []
   );
@@ -118,41 +154,43 @@ export const App: React.FC = () => {
   );
 
   return (
-    <MuiThemeProvider theme={muiTheme}>
-      <FormFieldsProvider>
-        <Box sx={outerBoxSx}>
-          <Box sx={innerBoxSx}>
-            <MainAppBar onMenuClick={() => setDrawerOpen(!drawerOpen)} />
+    <BrowserRouter>
+      <MuiThemeProvider theme={muiTheme}>
+        <FormFieldsProvider>
+          <Box sx={outerBoxSx}>
+            <Box sx={innerBoxSx}>
+              <MainAppBar onMenuClick={() => setDrawerOpen(!drawerOpen)} />
 
-            <Stack direction={{ xs: "column", lg: "row" }} sx={stackSx}>
-              <ContentNavigation sx={contentNavigationSx} />
+              <Stack direction={{ xs: "column", lg: "row" }} sx={stackSx}>
+                <ContentNavigation sx={contentNavigationSx} />
 
-              <Box sx={contentBoxSx}>
-                <ContentContainer
-                  title="⚡ Команды для выполнения"
-                  sx={contentContainerSx}
-                />
-              </Box>
+                <Box sx={contentBoxSx}>
+                  <ContentContainer
+                    title="⚡ Команды для выполнения"
+                    sx={contentContainerSx}
+                  />
+                </Box>
 
-              <TemplatesMenu
-                sx={templatesMenuSx}
-                paperSx={templatesMenuPaperSx}
-              />
-
-              <Drawer
-                open={drawerOpen}
-                onToggle={() => setDrawerOpen(!drawerOpen)}
-                showMenuButton={false}
-              >
                 <TemplatesMenu
-                  sx={drawerTemplatesMenuSx}
-                  paperSx={drawerTemplatesMenuPaperSx}
+                  sx={templatesMenuSx}
+                  paperSx={templatesMenuPaperSx}
                 />
-              </Drawer>
-            </Stack>
+
+                <Drawer
+                  open={drawerOpen}
+                  onToggle={() => setDrawerOpen(!drawerOpen)}
+                  showMenuButton={false}
+                >
+                  <TemplatesMenu
+                    sx={drawerTemplatesMenuSx}
+                    paperSx={drawerTemplatesMenuPaperSx}
+                  />
+                </Drawer>
+              </Stack>
+            </Box>
           </Box>
-        </Box>
-      </FormFieldsProvider>
-    </MuiThemeProvider>
+        </FormFieldsProvider>
+      </MuiThemeProvider>
+    </BrowserRouter>
   );
 };
