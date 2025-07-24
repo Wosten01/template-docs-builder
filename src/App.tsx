@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Box, Stack, useMediaQuery } from "@mui/material";
-import { ContentContainer, ContentNavigation, Drawer } from "./components";
+import { Content, ContentNavigation, Drawer } from "./components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import createTheme from "./theme";
 import { useTheme } from "./hooks/use-theme.hook";
@@ -167,7 +167,7 @@ export const App: React.FC = () => {
                 <ContentNavigation sx={contentNavigationSx} />
 
                 <Box sx={contentBoxSx}>
-                  <ContentContainer
+                  <Content
                     title="⚡ Команды для выполнения"
                     sx={contentContainerSx}
                   />

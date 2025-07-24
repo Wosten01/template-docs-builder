@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Typography, Stack, Accordion, Box, Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import type { Block as block, StepItem } from "../../configs";
@@ -7,28 +7,36 @@ import { useFormFieldsContext } from "../../context";
 import { useHashScroll } from "../../hooks";
 
 interface Props {
-  group: string;
+  section: string;
   blocks: block[];
-  groupIdx: number;
+  sectionIdx: number;
 }
 
-export const BlocksGroup: React.FC<Props> = ({ group, blocks, groupIdx }) => {
+export const Section: React.FC<Props> = ({ section, blocks, sectionIdx }) => {
   const { fields } = useFormFieldsContext();
-  const [expanded, setExpanded] = useState(true);
-
+  
   const sectionId = useMemo(
-    () => `section-${group.replace(/\s+/g, "-").toLowerCase()}`,
-    [group]
+    () => `section-${section.replace(/\s+/g, "-").toLowerCase()}`,
+    [section]
   );
 
-  const handleToggle = () => setExpanded((prev) => !prev);
+  const [expanded, setExpanded] = useState(() => {
+    const stored = localStorage.getItem(`section-expanded-${sectionId}`);
+    return stored !== null ? JSON.parse(stored) : true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(`section-expanded-${sectionId}`, JSON.stringify(expanded));
+  }, [expanded, sectionId]);
+
+  const handleToggle = () => setExpanded((prev: boolean) => !prev);
 
   const { ref } = useHashScroll(sectionId);
 
-  const renderItems = useMemo(
+  const renderBlocks = useMemo(
     () =>
       blocks.map((block, idx) => {
-        const id = `${groupIdx}-${idx}`;
+        const id = `${sectionIdx}-${idx}`;
         return (
           <Block
             key={id}
@@ -44,7 +52,7 @@ export const BlocksGroup: React.FC<Props> = ({ group, blocks, groupIdx }) => {
           />
         );
       }),
-    [blocks, fields, groupIdx]
+    [blocks, fields, sectionIdx]
   );
 
   return (
@@ -82,7 +90,7 @@ export const BlocksGroup: React.FC<Props> = ({ group, blocks, groupIdx }) => {
           }}
         />
         <Typography variant="h5" color="primary" sx={{ fontWeight: 500 }}>
-          {group}
+          {section}
         </Typography>
       </Box>
       <Collapse in={expanded}>
@@ -91,7 +99,7 @@ export const BlocksGroup: React.FC<Props> = ({ group, blocks, groupIdx }) => {
           className="px-8 mb-8 rounded-b-md"
           sx={{ width: "100%" }}
         >
-          {renderItems}
+          {renderBlocks}
         </Stack>
       </Collapse>
     </Accordion>

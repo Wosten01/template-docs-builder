@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Box, Typography, Stack, type SxProps } from "@mui/material";
-import { BlocksGroup } from "../BlocksGroup";
+import { Section } from "../Section";
 import { blocksConfig } from "../../configs";
 
 interface Props {
@@ -9,15 +9,15 @@ interface Props {
   spacing?: number;
 }
 
-export const ContentContainer: React.FC<Props> = (({ sx, title }) => {
-  const blocksGroups = useMemo(
+export const Content: React.FC<Props> = (({ sx, title }) => {
+  const sections = useMemo(
     () =>
-      blocksConfig.map((group, gIdx) => (
-        <BlocksGroup
-          key={group.group}
-          group={group.group}
-          blocks={group.blocks}
-          groupIdx={gIdx}
+      blocksConfig.map((section, gIdx) => (
+        <Section
+          key={section.group}
+          section={section.group}
+          blocks={section.blocks}
+          sectionIdx={gIdx}
         />
       )),
     []
@@ -45,7 +45,7 @@ export const ContentContainer: React.FC<Props> = (({ sx, title }) => {
           p: { xs: 3, lg: 0 },
         }}
       >
-        {blocksGroups}
+        {sections}
       </Stack>
     </Box>
   );

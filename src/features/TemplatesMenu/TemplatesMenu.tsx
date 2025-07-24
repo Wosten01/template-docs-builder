@@ -34,17 +34,13 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
   const content = useMemo(
     () => (
       <Stack spacing={2}>
-        <Accordion
-          defaultExpanded
-          sx={{ borderRadius: 1, background: "rgba(0,0,0,0.02)" }}
-        >
+        <Accordion sx={{ borderRadius: 1, background: "rgba(0,0,0,0.02)" }}>
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography variant="subtitle1" fontWeight={600}>
               📝 Параметры сервера
             </Typography>
           </AccordionSummary>
-          <AccordionDetails sx={{ p: 0, m: 0 }}>
-            <Stack spacing={2}>
+          <AccordionDetails>
               {config.map((field) => {
                 return (
                   <InputField
@@ -64,7 +60,6 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
               >
                 🔄 Сбросить к дефолтным значениям
               </Button>
-            </Stack>
           </AccordionDetails>
         </Accordion>
 
@@ -100,7 +95,18 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
         ...sx,
       }}
     >
-      <Paper elevation={3} sx={{ px: 2, ...paperSx }}>
+      <Paper 
+        elevation={2} 
+        sx={{ 
+          px: 2, 
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          ...paperSx 
+        }}
+      >
         {content}
       </Paper>
     </Box>
