@@ -109,6 +109,7 @@ export const Block: React.FC<Props> = ({
                       display: "flex",
                       alignItems: "center",
                       width: "100%",
+                      py: 1,
                     }}
                   >
                     <Checkbox
@@ -141,7 +142,7 @@ export const Block: React.FC<Props> = ({
                   </Box>
                 </Box>
                 {codeText && (
-                  <div className="ml-2 mb-4">
+                  <div className="ml-8 mb-4">
                     <CodeBlock
                       id={`step-${title}-${index}`}
                       code={codeText}

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Box, Stack } from "@mui/material";
+import React, { useState, useMemo } from "react";
+import { Box, Stack, useMediaQuery } from "@mui/material";
 import { ContentContainer, ContentNavigation, Drawer } from "./components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import createTheme from "./theme";
@@ -9,19 +9,19 @@ import { FormFieldsProvider } from "./context";
 import { BrowserRouter } from "react-router-dom";
 
 export const App: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  // const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
   const muiTheme = useMemo(() => createTheme(theme), [theme]);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setIsScrolled(window.scrollY > 100);
+  //   };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   const templatesMenuSx = useMemo(
     () => ({
@@ -35,7 +35,7 @@ export const App: React.FC = () => {
   const templatesMenuPaperSx = useMemo(
     () => ({
       py: 2,
-      mt: { xs: 0, lg: isScrolled ? 0 : 12 },
+      // mt: { xs: 0, lg: isScrolled ? 0 : 12 },
       borderRadius: 1,
       position: { xs: "static", lg: "sticky" },
       top: { lg: 20 },
@@ -58,7 +58,7 @@ export const App: React.FC = () => {
         },
       },
     }),
-    [isScrolled]
+    []
   );
 
   const drawerTemplatesMenuSx = useMemo(
@@ -153,6 +153,8 @@ export const App: React.FC = () => {
     []
   );
 
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("lg"));
+
   return (
     <BrowserRouter>
       <MuiThemeProvider theme={muiTheme}>
@@ -171,21 +173,23 @@ export const App: React.FC = () => {
                   />
                 </Box>
 
-                <TemplatesMenu
-                  sx={templatesMenuSx}
-                  paperSx={templatesMenuPaperSx}
-                />
-
-                <Drawer
-                  open={drawerOpen}
-                  onToggle={() => setDrawerOpen(!drawerOpen)}
-                  showMenuButton={false}
-                >
+                {isMobile ? (
+                  <Drawer
+                    open={drawerOpen}
+                    onToggle={() => setDrawerOpen(!drawerOpen)}
+                    showMenuButton={false}
+                  >
+                    <TemplatesMenu
+                      sx={drawerTemplatesMenuSx}
+                      paperSx={drawerTemplatesMenuPaperSx}
+                    />
+                  </Drawer>
+                ) : (
                   <TemplatesMenu
-                    sx={drawerTemplatesMenuSx}
-                    paperSx={drawerTemplatesMenuPaperSx}
+                    sx={templatesMenuSx}
+                    paperSx={templatesMenuPaperSx}
                   />
-                </Drawer>
+                )}
               </Stack>
             </Box>
           </Box>

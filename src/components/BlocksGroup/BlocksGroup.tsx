@@ -23,7 +23,7 @@ export const BlocksGroup: React.FC<Props> = ({ group, blocks, groupIdx }) => {
 
   const handleToggle = () => setExpanded((prev) => !prev);
 
-  const {ref} = useHashScroll(sectionId)
+  const { ref } = useHashScroll(sectionId);
 
   const renderItems = useMemo(
     () =>
@@ -48,52 +48,52 @@ export const BlocksGroup: React.FC<Props> = ({ group, blocks, groupIdx }) => {
   );
 
   return (
-    <section id={sectionId} ref={ref} className="my-2">
-      <Accordion
-        defaultExpanded
+    <Accordion
+      id={sectionId}
+      ref={ref}
+      defaultExpanded
+      sx={{
+        mt: "0 !important",
+        mb: "2 !important",
+        borderRadius: "4px !important",
+        userSelect: "none",
+        "&:before": { display: "none" },
+        overflow: "hidden",
+      }}
+    >
+      <Box
+        onClick={handleToggle}
         sx={{
-          mt: "0 !important",
-          mb: "2 !important",
-          borderRadius: "4px !important",
-          userSelect: "none",
-          "&:before": { display: "none" },
-          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+          p: 3,
+          backgroundColor: "rgba(0,0,0,0.02)",
+          borderRadius: 2,
+          minHeight: 56,
+          "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
         }}
       >
-        <Box
-          onClick={handleToggle}
+        <ExpandMoreIcon
           sx={{
-            display: "flex",
-            alignItems: "center",
-            cursor: "pointer",
-            p: 3,
-            backgroundColor: "rgba(0,0,0,0.02)",
-            borderRadius: 2,
-            minHeight: 56,
-            "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
+            mr: 1,
+            transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
+            transition: "transform 0.2s ease",
           }}
+        />
+        <Typography variant="h5" color="primary" sx={{ fontWeight: 500 }}>
+          {group}
+        </Typography>
+      </Box>
+      <Collapse in={expanded}>
+        <Stack
+          spacing={6}
+          className="px-8 mb-8 rounded-b-md"
+          sx={{ width: "100%" }}
         >
-          <ExpandMoreIcon
-            sx={{
-              mr: 1,
-              transform: expanded ? "rotate(0deg)" : "rotate(-90deg)",
-              transition: "transform 0.2s ease",
-            }}
-          />
-          <Typography variant="h5" color="primary" sx={{ fontWeight: 500 }}>
-            {group}
-          </Typography>
-        </Box>
-        <Collapse in={expanded}>
-          <Stack
-            spacing={6}
-            className="px-8 mb-8 rounded-b-md"
-            sx={{ width: "100%" }}
-          >
-            {renderItems}
-          </Stack>
-        </Collapse>
-      </Accordion>
-    </section>
+          {renderItems}
+        </Stack>
+      </Collapse>
+    </Accordion>
   );
 };

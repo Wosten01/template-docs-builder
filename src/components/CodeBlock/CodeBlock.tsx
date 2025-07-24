@@ -182,8 +182,8 @@ export const CodeBlock: React.FC<CodeBlockProps> = (props: CodeBlockProps) => {
       .split("\n")
       .filter((line) => line.trim() !== "");
 
-    return codeLines.map((codeLine) => {
-      return <SingleCodeBlock {...props} code={codeLine} />;
+    return codeLines.map((codeLine, index) => {
+      return <SingleCodeBlock key={`${props.id}-line-${index}`} {...props} code={codeLine} />;
     });
   }
 

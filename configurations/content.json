@@ -5,7 +5,7 @@
       {
         "title": "Подключение к серверу",
         "description": "Подключение к VPS по SSH. После ввода команды потребуется ввести пароль пользователя (пароль не отображается).",
-        "code": "ssh {root}@{serverIp}"
+        "code": "ssh root@{server_ip}"
       },
       {
         "title": "Обновление системы",
@@ -47,7 +47,7 @@
           "Убедитесь, что сервер доступен по SSH.",
           {
             "text": "Выполните команду:",
-            "code": "ssh-copy-id -i {ssh_path_to_pub_key} {username}@{serverIp}"
+            "code": "ssh-copy-id -i {ssh_path_to_key}.pub {username}@{server_ip}"
           },
           "Введите пароль пользователя сервера по запросу.",
           "Теперь для входа будет использоваться ваш SSH-ключ без необходимости каждый раз вводить пароль."
@@ -64,7 +64,7 @@
           {
             "text": "Добавьте в файл блок (замените значения на свои):",
             "code": {
-              "text": "Host {host_name}\n\tHostName {serverIp}\n\tUser {username}\n\tPort {ssh_port}\n\tIdentityFile {ssh_path_to_pub_key}\n\tIdentitiesOnly yes",
+              "text": "Host {host_name}\n\tHostName {server_ip}\n\tUser {username}\n\tPort {ssh_port}\n\tIdentityFile {ssh_path_to_key}.pub\n\tIdentitiesOnly yes",
               "showArrow": "false"
             }
           },
@@ -75,7 +75,7 @@
             "code": "chmod 600 ~/.ssh/config"
           },
           {
-            "text": "Теперь можно подключаться по имени alias (возможно снова придется ввести код пользователя {username}):",
+            "text": "После настройки на серверы вы сможете подключатся к серверу через alias:",
             "code": "ssh {host_name}"
           }
         ]
@@ -112,11 +112,115 @@
             "code": "sudo systemctl restart ssh"
           },
           {
-            "text": "Теперь подключение нужно выполнять с указанием нового порта:",
-            "code": "ssh -p {ssh_port} {username}@{serverIp}"
+            "text": "Теперь можно подключаться по имени alias (возможно снова придется ввести код пользователя {username}):",
+            "code": "ssh {host_name}"
           }
         ],
         "note": "Не закрывайте активную SSH-сессию, пока не убедитесь, что можно подключиться по новому порту. Убедитесь, что SSH-ключи настроены и пользователь имеет доступ с sudo. Выбранный порт должен быть в диапазоне 1024–65535 и не использоваться другими службами."
+      }
+    ]
+  },
+  {
+    "group": "Настройка VPN",
+    "blocks": [
+      {
+        "title": "Создание самоподписанного сертификата",
+        "description": "Генерация SSL-сертификата с помощью openssl для защиты соединения:",
+        "code": "sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \\\n  -keyout /etc/x-ui/selfsigned.key \\\n  -out /etc/x-ui/selfsigned.crt \\\n  -subj \"/CN={server_ip}\""
+      },
+      {
+        "title": "Установка 3X-UI",
+        "description": "Установка панели 3X-UI с помощью скрипта установки.",
+        "steps": [
+          {
+            "text": "После успешной установки проверьте, на каком порту запущена панель 3X-UI.",
+            "code": "curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh | sudo bash"
+          },
+          {
+            "text": "Для этого можете просмотреть статус сервиса или процессы, командой ниже или проверьте файлы конфигурации или логи панели.",
+            "code": "sudo systemctl status x-ui"
+          },
+          "В консоли будет выведены данные для входа, перейдите по url указанной в консоли"
+        ],
+        "note": "Убедитесь, что порт доступен и не блокируется провайдером или локальными настройками firewall перед работой с панелью."
+      },
+      {
+        "title": "Добавление сертификата в панель x-ui",
+        "description": "Укажите созданные файлы сертификата и ключа в разделе `Certificates` во вкладке `Panel Settings`.",
+        "steps": [
+          "  /etc/x-ui/selfsigned.crt – сертификат",
+          "  /etc/x-ui/selfsigned.key – приватный ключ"
+        ]
+      },
+      {
+        "title": "Настройка подключения",
+        "steps": [
+          "Зайдите во вкладку `Inbounds`",
+          "Нажмите кнопку `Add Inbounds`",
+          "`Remark` можете выбрать имя (название подключения)",
+          "`Protocol` выберете `vless`",
+          "`Port` введите 443",
+          "`Security` введите нажмите `Reality`",
+          "`uTLS` можно выбрать любой",
+          "Выбор `Dest` описан ниже (можно оставить как есть, однако это важный параметр влияющий на скорость, поэтому лучше отнестись к нему серьезно)",
+          "Нажать на кнопку `Get New Cert`"
+        ]
+      },
+      {
+        "title": "Настройка пользователя",
+        "note": "Можно добавить сразу несколько пользователей по кнопке `Add Bulk`",
+        "steps": [
+          "Нажмите кнопку `Add Client` по кнопке в колонке `Menu`",
+          "Вместо Email можно ввести имя (или что-либо другое)",
+          "Во `Flow` установить значение xtls-rprx-vision"
+        ]
+      },
+      {
+        "title": "Выбор сайта dest для Reality",
+        "description": "Рекомендуемые сайты для параметра dest и проверка скорости доступа.\nМожете выбрать и проверить один из предложенных сайтов или выбрать собственный:",
+        "steps": [
+          {
+            "text": "www.samsung.com:",
+            "code": "ping -c 4 www.samsung.com"
+          },
+          {
+            "text": "www.googletagmanager.com:",
+            "code": "ping -c 4 www.googletagmanager.com"
+          },
+          {
+            "text": "www.asus.com:",
+            "code": "ping -c 4 www.asus.com"
+          },
+          {
+            "text": "www.amd.com:",
+            "code": "ping -c 4 www.amd.com"
+          },
+          {
+            "text": "www.cisco.com:",
+            "code": "ping -c 4 www.cisco.com"
+          },
+          {
+            "text": "www.microsoft.com:",
+            "code": "ping -c 4 www.microsoft.com"
+          },
+          {
+            "text": "dl.google.com:",
+            "code": "ping -c 4 dl.google.com"
+          },
+          {
+            "text": "www.linksys.com:",
+            "code": "ping -c 4 www.linksys.com"
+          },
+          {
+            "text": "www.nvidia.com:",
+            "code": "ping -c 4 www.nvidia.com"
+          }
+        ]
+      },
+      {
+        "title": "Разрешение обращения к портам",
+        "description": "Если вы выполнили предыдущие шаги, то вы открыли 443 порт для `Inbound` и {3x-ui-port} для панели 3X-UI.",
+        "code": "sudo ufw allow 443/tcp && sudo ufw allow {3x-ui-port}/tcp && sudo ufw reload"
       }
     ]
   }

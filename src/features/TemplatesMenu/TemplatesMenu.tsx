@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import {
   Box,
   Paper,
@@ -13,6 +13,7 @@ import {
 import { ExpandMore } from "@mui/icons-material";
 import { InputField, ThemeSelector } from "../../components";
 import { useFormFieldsContext } from "../../context";
+import { getSetterName, toCamelCase } from "../../utils";
 
 interface Props {
   sx?: SxProps;
@@ -20,11 +21,15 @@ interface Props {
 }
 
 export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
-  const { fields, setters, config, resetToDefaults  } = useFormFieldsContext();
+  const { fields, setters, config, resetToDefaults } = useFormFieldsContext();
 
   const handleReset = useCallback(() => {
     resetToDefaults();
-  },[resetToDefaults])
+  }, [resetToDefaults]);
+
+  useEffect(() => {
+    console.log(fields);
+  }, [fields]);
 
   const content = useMemo(
     () => (
@@ -38,7 +43,7 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
               📝 Параметры сервера
             </Typography>
           </AccordionSummary>
-           <AccordionDetails sx={{ p: 0, m:0 }}>
+          <AccordionDetails sx={{ p: 0, m: 0 }}>
             <Stack spacing={2}>
               {config.map((field) => {
                 return (
@@ -46,13 +51,7 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
                     key={field.key}
                     label={field.label}
                     value={fields[field.key]}
-                    onChange={
-                      setters[
-                        `set${
-                          field.key.charAt(0).toUpperCase() + field.key.slice(1)
-                        }` as keyof typeof setters
-                      ]
-                    }
+                    onChange={setters[getSetterName(toCamelCase(field.key))]}
                     placeholder={field.placeholder}
                   />
                 );
@@ -83,13 +82,13 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
               🎨 Настройки
             </Typography>
           </AccordionSummary>
-          <AccordionDetails >
+          <AccordionDetails>
             <ThemeSelector title="Teма" />
           </AccordionDetails>
         </Accordion>
       </Stack>
     ),
-    [config, handleReset, fields, setters]
+    [config, fields, handleReset, setters]
   );
 
   return (

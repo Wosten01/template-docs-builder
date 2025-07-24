@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import {
   formFieldsConfig,
   type FormFieldsState,
   type FormFieldsSetters,
 } from "../configs/form-fields";
-
-const CACHE_KEY = "form-fields-cache";
-const CACHE_INTERVAL = 1000;
+import { getSetterName, toCamelCase } from "../utils";
 
 export const useFormFields = () => {
   const initialValues = useMemo(() => {
@@ -16,42 +14,26 @@ export const useFormFields = () => {
     }, {} as FormFieldsState);
   }, []);
 
-  const [fields, setFields] = useState<FormFieldsState>(() => {
-    const cached = localStorage.getItem(CACHE_KEY);
-    const cachedValues = cached ? JSON.parse(cached) : {};
-    return { ...initialValues, ...cachedValues };
-  });
+  const [fields, setFields] = useState<FormFieldsState>(initialValues);
+  console.log("as");
 
   const setters = useMemo(() => {
     return formFieldsConfig.reduce((acc, field) => {
-      const setterName = `set${
-        field.key.charAt(0).toUpperCase() + field.key.slice(1)
-      }` as keyof FormFieldsSetters;
-      acc[setterName] = ((key) => (value: string) => {
-        setFields((prev) => {
-          const newState = { ...prev, [key]: value };
-          return newState;
-        });
+      const setterName = getSetterName(toCamelCase(field.key));
+
+      acc[setterName] = ((key: string) => (value: string) => {
+        setFields((prev) => ({ ...prev, [key]: value }));
       })(field.key);
+
       return acc;
     }, {} as FormFieldsSetters);
   }, []);
 
   const resetToDefaults = useCallback(() => {
     setFields(initialValues);
-    localStorage.removeItem(CACHE_KEY);
   }, [initialValues]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(fields));
-    }, CACHE_INTERVAL);
-
-    return () => clearInterval(interval);
-  }, [fields]);
-
   return {
-    initialValues,
     fields,
     setters,
     config: formFieldsConfig,

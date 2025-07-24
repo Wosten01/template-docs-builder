@@ -63,7 +63,7 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
       });
     },
     {
-      threshold: 0.3, 
+      threshold: 0.1, 
       rootMargin: "-20% 0px -20% 0px",
     }
   );
