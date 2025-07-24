@@ -26,8 +26,8 @@ interface BlockRaw {
   note?: string;
 }
 
-export interface BlocksGroup {
-  group: string;
+export interface Section {
+  title: string;
   blocks: Block[];
 }
 
@@ -74,9 +74,9 @@ const parseStepTemplate = (step: StepItem): StepWithTemplate => {
 
 const blocksConfigRaw = CONFIG_CONSTANTS.CONTENT;
 
-export const blocksConfig: BlocksGroup[] = blocksConfigRaw.map((group) => ({
-  ...group,
-  blocks: (group.blocks as BlockRaw[]).map((block) => ({
+export const blocksConfig: Section[] = blocksConfigRaw.map((section) => ({
+  ...section,
+  blocks: (section.blocks as BlockRaw[]).map((block) => ({
     ...block,
     code: block.code ? parseCodeTemplate(block.code) : undefined,
     note: block.note ? parseTemplate(block.note) : undefined,

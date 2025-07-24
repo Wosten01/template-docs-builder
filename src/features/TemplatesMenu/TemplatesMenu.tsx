@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   Box,
   Paper,
@@ -27,39 +27,49 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
     resetToDefaults();
   }, [resetToDefaults]);
 
-  useEffect(() => {
-    console.log(fields);
-  }, [fields]);
-
   const content = useMemo(
     () => (
       <Stack spacing={2}>
-        <Accordion sx={{ borderRadius: 1, background: "rgba(0,0,0,0.02)" }}>
+        <Accordion
+          defaultExpanded
+          sx={{ borderRadius: 1, background: "rgba(0,0,0,0.02)" }}
+        >
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography variant="subtitle1" fontWeight={600}>
               📝 Параметры сервера
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-              {config.map((field) => {
-                return (
-                  <InputField
-                    key={field.key}
-                    label={field.label}
-                    value={fields[field.key]}
-                    onChange={setters[getSetterName(toCamelCase(field.key))]}
-                    placeholder={field.placeholder}
-                  />
-                );
-              })}
-              <Button
-                variant="outlined"
-                color="primary"
-                fullWidth
-                onClick={handleReset}
-              >
-                🔄 Сбросить к дефолтным значениям
-              </Button>
+          <AccordionDetails
+            sx={{
+              backdropFilter: "blur(10px)",
+              maxHeight: "60vh",
+              overflow: "auto",
+              scrollbarWidth: "none",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+          >
+            {config.map((field) => {
+              return (
+                <InputField
+                  key={field.key}
+                  label={field.label}
+                  value={fields[field.key]}
+                  onChange={setters[getSetterName(toCamelCase(field.key))]}
+                  placeholder={field.placeholder}
+                />
+              );
+            })}
+            <Button
+              sx={{ mt: 4 }}
+              variant="outlined"
+              color="primary"
+              fullWidth
+              onClick={handleReset}
+            >
+              🔄 Сбросить к дефолтным значениям
+            </Button>
           </AccordionDetails>
         </Accordion>
 
@@ -95,16 +105,12 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
         ...sx,
       }}
     >
-      <Paper 
-        elevation={2} 
-        sx={{ 
-          px: 2, 
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          scrollbarWidth: "none",
+      <Paper
+        elevation={2}
+        sx={{
+          px: 2,
           msOverflowStyle: "none",
-          ...paperSx 
+          ...paperSx,
         }}
       >
         {content}

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Box, Stack, useMediaQuery } from "@mui/material";
 import { Content, ContentNavigation, Drawer } from "./components";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
@@ -9,19 +9,19 @@ import { FormFieldsProvider } from "./context";
 import { BrowserRouter } from "react-router-dom";
 
 export const App: React.FC = () => {
-  // const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
   const muiTheme = useMemo(() => createTheme(theme), [theme]);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setIsScrolled(window.scrollY > 100);
-  //   };
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
 
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const templatesMenuSx = useMemo(
     () => ({
@@ -35,30 +35,11 @@ export const App: React.FC = () => {
   const templatesMenuPaperSx = useMemo(
     () => ({
       py: 2,
-      // mt: { xs: 0, lg: isScrolled ? 0 : 12 },
+      mt: { xs: 0, lg: isScrolled ? 0 : 12 },
       borderRadius: 1,
-      position: { xs: "static", lg: "sticky" },
-      top: { lg: 20 },
       transition: "margin-top 0.3s ease",
-      backdropFilter: "blur(10px)",
-      maxHeight: "80vh",
-      overflow: "auto",
-      "&::-webkit-scrollbar": {
-        width: "6px",
-      },
-      "&::-webkit-scrollbar-track": {
-        background: "rgba(0,0,0,0.1)",
-        borderRadius: "3px",
-      },
-      "&::-webkit-scrollbar-thumb": {
-        background: "rgba(0,0,0,0.3)",
-        borderRadius: "3px",
-        "&:hover": {
-          background: "rgba(0,0,0,0.5)",
-        },
-      },
     }),
-    []
+    [isScrolled]
   );
 
   const drawerTemplatesMenuSx = useMemo(
@@ -84,7 +65,7 @@ export const App: React.FC = () => {
         maxHeight: "80vh",
         overflow: "auto",
         "&::-webkit-scrollbar": {
-          width: "6px",
+          display: "none",
         },
         "&::-webkit-scrollbar-track": {
           background: "rgba(0,0,0,0.1)",

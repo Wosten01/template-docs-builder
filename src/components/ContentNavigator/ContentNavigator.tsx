@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, Tabs, Tab, type SxProps } from "@mui/material";
-import { blocksConfig } from "../../configs/blocks";
+import { blocksConfig as sectionsConfig } from "../../configs/blocks";
 import { useLocation } from "react-router-dom";
 
 interface ContentNavigationProps {
@@ -21,8 +21,8 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
       const sectionName = hashFromUrl
         .replace("section-", "")
         .replace(/-/g, " ");
-      const index = blocksConfig.findIndex(
-        (group) => group.group.toLowerCase() === sectionName.toLowerCase()
+      const index = sectionsConfig.findIndex(
+        (section) => section.title.toLowerCase() === sectionName.toLowerCase()
       );
       if (index !== -1) {
         setActiveTab(index);
@@ -51,8 +51,8 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
             const sectionName = sectionId
               .replace("section-", "")
               .replace(/-/g, " ");
-            const index = blocksConfig.findIndex(
-              (group) => group.group.toLowerCase() === sectionName.toLowerCase()
+            const index = sectionsConfig.findIndex(
+              (section) => section.title.toLowerCase() === sectionName.toLowerCase()
             );
             if (index !== -1) {
               setActiveTab(index);
@@ -129,11 +129,11 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
             },
           }}
         >
-          {blocksConfig.map((group, index) => (
+          {sectionsConfig.map((section, index) => (
             <Tab
               key={index}
-              label={group.group}
-              onClick={() => handleSectionClick(group.group, index)}
+              label={section.title}
+              onClick={() => handleSectionClick(section.title, index)}
             />
           ))}
         </Tabs>
