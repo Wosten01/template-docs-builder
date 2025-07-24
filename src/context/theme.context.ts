@@ -7,7 +7,7 @@ type ThemeContextType = {
 };
 
 export const initialState: ThemeContextType = {
-  theme: Themes.BlueLight,
+  theme: Themes.Matrix,
   setTheme: () => {},
 };
 

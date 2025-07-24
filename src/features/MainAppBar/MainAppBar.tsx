@@ -25,7 +25,7 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
           sx={{
             mb: 1,
             px: { xs: 1, sm: 0 },
-            fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem" },
+            fontSize: { xs: "1rem", sm: "2rem", md: "2.5rem" },
           }}
         >
           🚀 Настройка VPS сервера

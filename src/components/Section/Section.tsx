@@ -7,17 +7,17 @@ import { useFormFieldsContext } from "../../context";
 import { useHashScroll } from "../../hooks";
 
 interface Props {
-  section: string;
+  title: string;
   blocks: block[];
   sectionIdx: number;
 }
 
-export const Section: React.FC<Props> = ({ section, blocks, sectionIdx }) => {
+export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
   const { fields } = useFormFieldsContext();
-  
+
   const sectionId = useMemo(
-    () => `section-${section.replace(/\s+/g, "-").toLowerCase()}`,
-    [section]
+    () => `section-${title.replace(/\s+/g, "-").toLowerCase()}`,
+    [title]
   );
 
   const [expanded, setExpanded] = useState(() => {
@@ -26,7 +26,10 @@ export const Section: React.FC<Props> = ({ section, blocks, sectionIdx }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem(`section-expanded-${sectionId}`, JSON.stringify(expanded));
+    localStorage.setItem(
+      `section-expanded-${sectionId}`,
+      JSON.stringify(expanded)
+    );
   }, [expanded, sectionId]);
 
   const handleToggle = () => setExpanded((prev: boolean) => !prev);
@@ -75,7 +78,7 @@ export const Section: React.FC<Props> = ({ section, blocks, sectionIdx }) => {
           display: "flex",
           alignItems: "center",
           cursor: "pointer",
-          p: 3,
+          p: { xs: 0, sm: 3 },
           backgroundColor: "rgba(0,0,0,0.02)",
           borderRadius: 2,
           minHeight: 56,
@@ -90,14 +93,18 @@ export const Section: React.FC<Props> = ({ section, blocks, sectionIdx }) => {
           }}
         />
         <Typography variant="h5" color="primary" sx={{ fontWeight: 500 }}>
-          {section}
+          {title}
         </Typography>
       </Box>
       <Collapse in={expanded}>
         <Stack
           spacing={6}
-          className="px-8 mb-8 rounded-b-md"
-          sx={{ width: "100%" }}
+          className="rounded-b-md"
+          sx={{
+            width: "100%",
+            px: { xs: 4, sm: 8 },
+            mb: 8,
+          }}
         >
           {renderBlocks}
         </Stack>

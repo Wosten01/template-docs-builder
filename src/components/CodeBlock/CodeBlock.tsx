@@ -78,6 +78,8 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
               : `0 4px 16px ${theme.palette.primary.main}15`
             : theme.shadows[2],
           backdropFilter: "blur(10px)",
+          display: "flex",
+          alignItems: "center",
           "&::before": showArrow
             ? {
                 content: '"❯ "',
@@ -112,7 +114,10 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
       >
         <span
           style={{
-            whiteSpace: "pre-line",
+            flex: 1,
+            minWidth: 0,
+            whiteSpace: "pre-wrap",
+            overflowWrap: "break-word",
             textDecoration: isCompleted ? "line-through" : "none",
             opacity: isCompleted ? 0.7 : 1,
             textShadow: isDark
@@ -122,6 +127,7 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
             fontWeight: "400",
             fontFamily: "'Courier New', monospace",
             fontSize: "0.85rem",
+            marginRight: 1, 
           }}
         >
           {code}
@@ -145,24 +151,21 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
           <IconButton
             size="small"
             sx={{
-              position: "absolute",
-              right: 12,
-              top: "50%",
-              transform: "translateY(-50%)",
+              ml: 1,
               color: theme.palette.primary.main,
               opacity: 0.7,
-              pointerEvents: "none",
               filter: isDark
                 ? `drop-shadow(0 0 4px ${theme.palette.primary.main}60)`
                 : "none",
               transition: "all 0.3s ease",
               "&:hover": {
                 opacity: 1,
-                transform: "translateY(-50%) scale(1.1)",
+                transform: "scale(1.1)",
               },
             }}
             disableRipple
             tabIndex={-1}
+            onClick={handleClick}
           >
             {copied ? (
               <CheckCircleIcon fontSize="small" />
@@ -183,7 +186,13 @@ export const CodeBlock: React.FC<CodeBlockProps> = (props: CodeBlockProps) => {
       .filter((line) => line.trim() !== "");
 
     return codeLines.map((codeLine, index) => {
-      return <SingleCodeBlock key={`${props.id}-line-${index}`} {...props} code={codeLine} />;
+      return (
+        <SingleCodeBlock
+          key={`${props.id}-line-${index}`}
+          {...props}
+          code={codeLine}
+        />
+      );
     });
   }
 

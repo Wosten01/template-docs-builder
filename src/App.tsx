@@ -136,6 +136,8 @@ export const App: React.FC = () => {
 
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("lg"));
 
+  console.log("as")
+
   return (
     <BrowserRouter>
       <MuiThemeProvider theme={muiTheme}>

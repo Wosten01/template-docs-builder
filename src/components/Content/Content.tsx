@@ -15,7 +15,7 @@ export const Content: React.FC<Props> = (({ sx, title }) => {
       blocksConfig.map((section, gIdx) => (
         <Section
           key={section.title}
-          section={section.title}
+          title={section.title}
           blocks={section.blocks}
           sectionIdx={gIdx}
         />

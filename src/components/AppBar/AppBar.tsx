@@ -33,9 +33,9 @@ export const AppBar: React.FC<Props> = ({
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h4"
+            variant="h6"
             component="div"
-            sx={{ flexGrow: 1, fontWeight: 300 }}
+            sx={{ flexGrow: 1, fontWeight: 500 }}
           >
             {title}
           </Typography>
