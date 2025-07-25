@@ -1,10 +1,10 @@
-import type { FormFieldsSetters } from "../configs/form-fields";
+import type { FormFieldsSetters } from "../configs";
 
 export const toCamelCase = (str: string): string => {
   return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
 };
 
-export const toSnakeCase = (title: string): string => {
+export const toKebabCase = (title: string): string => {
   return `${title.replace(/\s+/g, "-").toLowerCase()}`;
 };
 

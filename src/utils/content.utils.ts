@@ -1,5 +1,5 @@
-import { CONFIG_CONSTANTS } from "../constants";
-import type { FormFieldsState } from "./form-fields";
+import type { FormFieldsState } from "../configs/form-fields";
+import { v4 as uuidv4 } from "uuid";
 
 export type StepItem = string | { text: string; code?: CodeItem };
 export type CodeItem =
@@ -27,14 +27,32 @@ interface BlockRaw {
 }
 
 export interface Section {
+  id: string;
   title: string;
-  blocks: Block[];
+  blocks?: Block[];
+}
+
+export interface SectionRaw {
+  title: string;
+  blocks?: BlockRaw[];
+}
+
+export interface DocumentationRaw {
+  title: string;
+  description: string;
+  content?: SectionRaw[];
+}
+
+export interface Documentation {
+  title: string;
+  description: string;
+  content?: Section[];
 }
 
 const parseTemplate = (templateString: string): StringWithTemplate => {
   return (fields: FormFieldsState) => {
     return templateString.replace(/\{(\w+)\}/g, (match, fieldName) => {
-      return fields[fieldName as keyof FormFieldsState] || match;
+      return fields[fieldName as keyof FormFieldsState] ?? match;
     });
   };
 };
@@ -43,7 +61,7 @@ const parseCodeTemplate = (code: CodeItem): CodeWithTemplate => {
   return (fields: FormFieldsState) => {
     if (typeof code === "string") {
       return code.replace(/\{(\w+)\}/g, (match, fieldName) => {
-        return fields[fieldName as keyof FormFieldsState] || match;
+        return fields[fieldName as keyof FormFieldsState] ?? match;
       });
     } else {
       return {
@@ -58,30 +76,38 @@ const parseCodeTemplate = (code: CodeItem): CodeWithTemplate => {
 const parseStepTemplate = (step: StepItem): StepWithTemplate => {
   return (fields: FormFieldsState) => {
     if (typeof step === "string") {
-      return parseTemplate(step)(fields)
+      return parseTemplate(step)(fields);
     } else {
-      const parsedCode = step.code ? parseCodeTemplate(step.code)(fields) : undefined
-      
       return {
         text: parseTemplate(step.text)(fields),
-        code: parsedCode,
+        code: step.code ? parseCodeTemplate(step.code)(fields) : undefined,
       };
     }
   };
 };
 
-
-
-const blocksConfigRaw = CONFIG_CONSTANTS.CONTENT;
-
-export const blocksConfig: Section[] = blocksConfigRaw.map((section) => ({
-  ...section,
-  blocks: (section.blocks as BlockRaw[]).map((block) => ({
-    ...block,
-    code: block.code ? parseCodeTemplate(block.code) : undefined,
-    note: block.note ? parseTemplate(block.note) : undefined,
-    steps: block.steps
-      ? block.steps.map((step: StepItem) => parseStepTemplate(step))
+export const convertRawToParsedSections = (
+  rawSections: DocumentationRaw
+): Documentation => {
+  return {
+    title: rawSections.title,
+    description: rawSections.description,
+    content: rawSections.content
+      ? rawSections.content.map((section) => ({
+          id: uuidv4(),
+          title: section.title,
+          blocks: section.blocks
+            ? section.blocks.map((block) => ({
+                title: block.title,
+                description: block.description,
+                code: block.code ? parseCodeTemplate(block.code) : undefined,
+                note: block.note ? parseTemplate(block.note) : undefined,
+                steps: block.steps
+                  ? block.steps.map((step) => parseStepTemplate(step))
+                  : undefined,
+              }))
+            : undefined,
+        }))
       : undefined,
-  })),
-}));
+  };
+};

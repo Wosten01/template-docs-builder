@@ -1,12 +1,12 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useMemo, useCallback } from "react";
 import {
   formFieldsConfig,
   type FormFieldsState,
   type FormFieldsSetters,
-} from "../configs/form-fields";
-import { getSetterName, storageUtils, toCamelCase } from "../utils";
+} from "../configs";
+import { getSetterName, toCamelCase } from "../utils";
 import { CONFIG_CONSTANTS } from "../constants";
-
+import { useLocalStorage } from "./use-local-storage.hook";
 
 export const useFormFields = () => {
   const getInitialValues = useCallback(() => {
@@ -16,18 +16,12 @@ export const useFormFields = () => {
     }, {} as FormFieldsState);
   }, []);
 
-  const getStoredValues = useCallback((): FormFieldsState => {
-    const initialValues = getInitialValues();
-    const stored = storageUtils.getItem(CONFIG_CONSTANTS.STORAGE_KEY);
-    if (!stored) return initialValues;
-    return { ...initialValues, ...stored };
-  }, [getInitialValues]);
+  const initialValues = useMemo(() => getInitialValues(), [getInitialValues]);
 
-  const [fields, setFields] = useState<FormFieldsState>(getStoredValues);
-
-  useEffect(() => {
-    storageUtils.setItem(CONFIG_CONSTANTS.STORAGE_KEY, fields);
-  }, [fields]);
+  const [fields, setFields, removeFields] = useLocalStorage(
+    CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.STORAGE_KEY,
+    initialValues
+  );
 
   const setters = useMemo(() => {
     return formFieldsConfig.reduce((acc, field) => {
@@ -39,13 +33,11 @@ export const useFormFields = () => {
 
       return acc;
     }, {} as FormFieldsSetters);
-  }, []);
+  }, [setFields]);
 
   const resetToDefaults = useCallback(() => {
-    const initialValues = getInitialValues();
-    setFields(initialValues);
-    storageUtils.removeItem(CONFIG_CONSTANTS.STORAGE_KEY);
-  }, [getInitialValues]);
+    removeFields();
+  }, [removeFields]);
 
   return {
     fields,

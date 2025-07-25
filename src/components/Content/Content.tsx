@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Box, Typography, Stack, type SxProps } from "@mui/material";
 import { Section } from "../Section";
-import { blocksConfig } from "../../configs";
+import { useContentConfig } from "../../hooks";
 
 interface Props {
   title: string;
@@ -10,9 +10,11 @@ interface Props {
 }
 
 export const Content: React.FC<Props> = (({ sx, title }) => {
+ const contentConfig =  useContentConfig()
+
   const sections = useMemo(
     () =>
-      blocksConfig.map((section, gIdx) => (
+      contentConfig.content?.map((section, gIdx) => (
         <Section
           key={section.title}
           title={section.title}
@@ -20,7 +22,7 @@ export const Content: React.FC<Props> = (({ sx, title }) => {
           sectionIdx={gIdx}
         />
       )),
-    []
+    [contentConfig]
   );
 
   return (

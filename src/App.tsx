@@ -7,12 +7,16 @@ import { useTheme } from "./hooks/use-theme.hook";
 import { MainAppBar, TemplatesMenu } from "./features";
 import { FormFieldsProvider } from "./context";
 import { BrowserRouter } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
   const muiTheme = useMemo(() => createTheme(theme), [theme]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { t } = useTranslation("translation", {
+    keyPrefix: "main_page.feature",
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -136,8 +140,6 @@ export const App: React.FC = () => {
 
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("lg"));
 
-  console.log("as")
-
   return (
     <BrowserRouter>
       <MuiThemeProvider theme={muiTheme}>
@@ -147,13 +149,13 @@ export const App: React.FC = () => {
               <MainAppBar onMenuClick={() => setDrawerOpen(!drawerOpen)} />
 
               <Stack direction={{ xs: "column", lg: "row" }} sx={stackSx}>
-                <ContentNavigation sx={contentNavigationSx} />
+                <ContentNavigation
+                  title={t("navigation.title")}
+                  sx={contentNavigationSx}
+                />
 
                 <Box sx={contentBoxSx}>
-                  <Content
-                    title="⚡ Команды для выполнения"
-                    sx={contentContainerSx}
-                  />
+                  <Content title={t("content.title")} sx={contentContainerSx} />
                 </Box>
 
                 {isMobile ? (
@@ -163,12 +165,14 @@ export const App: React.FC = () => {
                     showMenuButton={false}
                   >
                     <TemplatesMenu
+                      title={t("templates_menu.title")}
                       sx={drawerTemplatesMenuSx}
                       paperSx={drawerTemplatesMenuPaperSx}
                     />
                   </Drawer>
                 ) : (
                   <TemplatesMenu
+                    title={t("templates_menu.title")}
                     sx={templatesMenuSx}
                     paperSx={templatesMenuPaperSx}
                   />

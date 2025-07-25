@@ -16,6 +16,7 @@ import {
 import type { CodeItem, StepItem } from "../../configs";
 import { CodeBlock } from "../CodeBlock";
 import { extractStepProperties } from "../../utils";
+import { CONFIG_CONSTANTS } from "../../constants";
 
 interface Props {
   title?: string;
@@ -163,7 +164,7 @@ export const Block: React.FC<Props> = ({
 
   useEffect(() => {
     if (steps && title) {
-      localStorage.setItem(`steps-${title}`, JSON.stringify(completedSteps));
+      localStorage.setItem(`${CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.STEPS_PREFIX}${title}`, JSON.stringify(completedSteps));
     }
   }, [completedSteps, steps, title]);
 

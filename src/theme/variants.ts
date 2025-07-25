@@ -257,8 +257,8 @@ export const minimalDarkVariant: VariantType = {
   },
 };
 
-export const blueLightVariant: VariantType = {
-  name: Themes.BlueLight,
+export const lightBlueVariant: VariantType = {
+  name: Themes.LightBlue,
   fontFamily: "'Poppins', 'Nunito', 'Open Sans', sans-serif",
   palette: {
     mode: "light",
@@ -321,8 +321,8 @@ export const blueLightVariant: VariantType = {
   },
 };
 
-export const greenLightVariant: VariantType = {
-  name: Themes.GreenLight,
+export const lightGreenVariant: VariantType = {
+  name: Themes.LightGreen,
   fontFamily: "'Roboto', 'Segoe UI', 'Helvetica Neue', sans-serif",
   palette: {
     mode: "light",
@@ -385,8 +385,8 @@ export const greenLightVariant: VariantType = {
   },
 };
 
-export const purpleDarkVariant: VariantType = {
-  name: Themes.PurpleDark,
+export const darkPurpleVariant: VariantType = {
+  name: Themes.DarkPurple,
   fontFamily: "'Fira Sans', 'Roboto', 'Helvetica Neue', sans-serif",
   palette: {
     mode: "dark",
@@ -644,9 +644,9 @@ export const halloweenVariant: VariantType = {
 const variants: VariantType[] = [
   minimalLightVariant,
   minimalDarkVariant,
-  blueLightVariant,
-  greenLightVariant,
-  purpleDarkVariant,
+  lightBlueVariant,
+  lightGreenVariant,
+  darkPurpleVariant,
   matrixVariant,
   oceanVariant,
   orangeBlueVariant,

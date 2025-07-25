@@ -1,0 +1,45 @@
+{
+  "main_page": {
+    "feature": {
+      "navigation": {
+        "title": "Навигация по контенту"
+      },
+      "templates_menu": {
+        "title": "Вводимые параметры"
+      },
+      "settings": {
+        "title": "Настройки",
+        "theme": "Teма",
+        "language": "Язык"
+      },
+      "content": {
+        "title": "Документация"
+      }
+    }
+  },
+  "common": {
+    "theme": {
+      "names": {
+        "MinimalLight": "Минимализм (светлая)",
+        "MinimalDark": "Минимализм (тёмная)",
+        "Matrix": "Матрица",
+        "Ocean": "Океан",
+        "LightBlue": "Светло-голубая",
+        "LightGreen": "Светло-зелёная",
+        "DarkPurple": "Тёмно-фиолетовая",
+        "Eyeburning": "Ядрёная",
+        "Halloween": "Хэллоуин",
+        "OrangeBlue": "Оранжево-синяя"
+      }
+    },
+    "actions": {
+      "reset": "Сбросить к начальным значениям"
+    },
+    "language": {
+      "names": {
+        "en": "Английский",
+        "ru": "Русский"
+      }
+    }
+  }
+}

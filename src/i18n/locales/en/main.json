@@ -1,0 +1,45 @@
+{
+  "main_page": {
+    "feature": {
+      "navigation": {
+        "title": "Content Navigation"
+      },
+      "templates_menu": {
+        "title": "Input Parameters"
+      },
+      "settings": {
+        "title": "Settings",
+        "theme": "Theme",
+        "language": "Language"
+      },
+      "content": {
+        "title": "Documentation"
+      }
+    }
+  },
+  "common": {
+    "theme": {
+      "names": {
+        "MinimalLight": "Minimal Light",
+        "MinimalDark": "Minimal Dark",
+        "Matrix": "Matrix",
+        "Ocean": "Ocean",
+        "LightBlue": "Light Blue",
+        "LightGreen": "Light Green",
+        "DarkPurple": "Purple Dark",
+        "Eyeburning": "Eyeburning",
+        "Halloween": "Halloween",
+        "OrangeBlue": "Orange Blue"
+      }
+    },
+    "actions": {
+      "reset": "Reset to defaults"
+    },
+    "language": {
+      "names": {
+        "en": "English",
+        "ru": "Russian"
+      }
+    }
+  }
+}

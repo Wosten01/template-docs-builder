@@ -1,15 +1,16 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { Typography, Stack, Accordion, Box, Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import type { Block as block, StepItem } from "../../configs";
 import { Block } from "../Block";
 import { useFormFieldsContext } from "../../context";
-import { useHashScroll } from "../../hooks";
+import { useHashScroll, useLocalStorage } from "../../hooks";
+import { CONFIG_CONSTANTS } from "../../constants";
 
 interface Props {
   title: string;
-  blocks: block[];
   sectionIdx: number;
+  blocks?: block[];
 }
 
 export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
@@ -20,17 +21,10 @@ export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
     [title]
   );
 
-  const [expanded, setExpanded] = useState(() => {
-    const stored = localStorage.getItem(`section-expanded-${sectionId}`);
-    return stored !== null ? JSON.parse(stored) : true;
-  });
-
-  useEffect(() => {
-    localStorage.setItem(
-      `section-expanded-${sectionId}`,
-      JSON.stringify(expanded)
-    );
-  }, [expanded, sectionId]);
+  const [expanded, setExpanded] = useLocalStorage(
+    `${CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.SECTION_EXPANDED_PREFIX}${sectionId}`,
+    true
+  );
 
   const handleToggle = () => setExpanded((prev: boolean) => !prev);
 
@@ -38,7 +32,7 @@ export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
 
   const renderBlocks = useMemo(
     () =>
-      blocks.map((block, idx) => {
+      blocks?.map((block, idx) => {
         const id = `${sectionIdx}-${idx}`;
         return (
           <Block

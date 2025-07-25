@@ -1,5 +1,4 @@
-import React from "react";
-import { FormControl, Select, MenuItem, Typography, Box } from "@mui/material";
+import React, { Fragment, useCallback } from "react";
 import {
   Code,
   Waves,
@@ -13,6 +12,8 @@ import {
 import variants from "../../theme/variants";
 import { useTheme } from "../../hooks/use-theme.hook";
 import { Themes } from "../../enums";
+import { useTranslation } from "react-i18next";
+import { Selector } from "../Selector"; 
 
 const getThemeIcon = (themeName: string) => {
   switch (themeName) {
@@ -22,13 +23,13 @@ const getThemeIcon = (themeName: string) => {
       return <Waves sx={{ fontSize: 16, mr: 1, color: "#00d4ff" }} />;
     case Themes.MinimalLight:
       return <Palette sx={{ fontSize: 16, mr: 1, color: "#666" }} />;
-    case Themes.BlueLight:
+    case Themes.LightBlue:
       return <Palette sx={{ fontSize: 16, mr: 1, color: "#6366f1" }} />;
     case Themes.MinimalDark:
       return <Palette sx={{ fontSize: 16, mr: 1, color: "#414144" }} />;
-    case Themes.GreenLight:
+    case Themes.LightGreen:
       return <Nature sx={{ fontSize: 16, mr: 1, color: "#4caf50" }} />;
-    case Themes.PurpleDark:
+    case Themes.DarkPurple:
       return <AutoAwesome sx={{ fontSize: 16, mr: 1, color: "#a855f7" }} />;
     case Themes.OrangeBlue:
       return <Flag sx={{ fontSize: 16, mr: 1, color: "#ff6b35" }} />;
@@ -47,52 +48,35 @@ interface Props {
   title?: string;
 }
 
-export const ThemeSelector: React.FC<Props> = ({ title }: Props) => {
+export const ThemeSelector: React.FC<Props> = ({ title }) => {
   const { theme, setTheme } = useTheme();
+  const { t: tCommon } = useTranslation("translation", {
+    keyPrefix: "common",
+  });
+
+  const getLocalizedName = useCallback(
+    (value: string) => tCommon("theme.names." + value.replace(" ", "")),
+    [tCommon]
+  );
+
+  const options = variants.map((variant) => ({
+    value: variant.name,
+    label: getLocalizedName(variant.name),
+    icon: getThemeIcon(variant.name),
+  }));
 
   return (
-    <Box sx={{ top: 16, right: 16, minWidth: 140 }}>
-      <FormControl size="small" fullWidth>
-        {title && (
-          <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5 }}>
-            {title}
-          </Typography>
-        )}
-        <Select
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.main",
-              borderWidth: "1px",
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.main",
-              borderWidth: "2px",
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "primary.main",
-              borderWidth: "2px",
-            },
-          }}
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-          variant="outlined"
-          renderValue={(selected) => (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              {getThemeIcon(selected)}
-              {selected}
-            </Box>
-          )}
-        >
-          {variants.map((variant) => (
-            <MenuItem key={variant.name} value={variant.name}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                {getThemeIcon(variant.name)}
-                {variant.name}
-              </Box>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <Selector
+      value={theme}
+      onChange={setTheme}
+      options={options}
+      label={title}
+      renderOption={(option) => (
+        <Fragment>
+          {option.icon}
+          {option.label}
+        </Fragment>
+      )}
+    />
   );
 };

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, Tabs, Tab, type SxProps } from "@mui/material";
-import { blocksConfig as sectionsConfig } from "../../configs/blocks";
 import { useLocation } from "react-router-dom";
+import { useContentConfig } from "../../hooks";
 
 interface ContentNavigationProps {
-  sx?: SxProps;
+  title: string,
   onSectionClick?: (sectionId: string) => void;
+  sx?: SxProps;
 }
 
 export const ContentNavigation: React.FC<ContentNavigationProps> = ({
-  sx,
+  title,
   onSectionClick,
+  sx,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const location = useLocation();
+   const content =  useContentConfig().content
 
   useEffect(() => {
     const hashFromUrl = decodeURIComponent(location.hash.slice(1));
@@ -21,14 +24,14 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
       const sectionName = hashFromUrl
         .replace("section-", "")
         .replace(/-/g, " ");
-      const index = sectionsConfig.findIndex(
+      const index = content?.findIndex(
         (section) => section.title.toLowerCase() === sectionName.toLowerCase()
       );
-      if (index !== -1) {
+      if (index && index !== -1) {
         setActiveTab(index);
       }
     }
-  }, [location.hash]);
+  }, [content, location.hash]);
 
   const handleSectionClick = (groupName: string, index: number) => {
     setActiveTab(index);
@@ -42,39 +45,40 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
   };
 
   useEffect(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id;
-          if (sectionId.startsWith("section-")) {
-            const sectionName = sectionId
-              .replace("section-", "")
-              .replace(/-/g, " ");
-            const index = sectionsConfig.findIndex(
-              (section) => section.title.toLowerCase() === sectionName.toLowerCase()
-            );
-            if (index !== -1) {
-              setActiveTab(index);
-              window.history.replaceState(null, "", `#${sectionId}`);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sectionId = entry.target.id;
+            if (sectionId.startsWith("section-")) {
+              const sectionName = sectionId
+                .replace("section-", "")
+                .replace(/-/g, " ");
+              const index = content?.findIndex(
+                (section) =>
+                  section.title.toLowerCase() === sectionName.toLowerCase()
+              );
+              if (index && index !== -1) {
+                setActiveTab(index);
+                window.history.replaceState(null, "", `#${sectionId}`);
+              }
             }
           }
-        }
-      });
-    },
-    {
-      threshold: 0.1, 
-      rootMargin: "-20% 0px -20% 0px",
-    }
-  );
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "-20% 0px -20% 0px",
+      }
+    );
 
-  const sections = document.querySelectorAll('[id^="section-"]');
-  sections.forEach((section) => observer.observe(section));
+    const sections = document.querySelectorAll('[id^="section-"]');
+    sections.forEach((section) => observer.observe(section));
 
-  return () => {
-    sections.forEach((section) => observer.unobserve(section));
-  };
-}, []);
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, [content]);
 
   return (
     <Box sx={{ position: "sticky", top: 20, alignSelf: "flex-start", ...sx }}>
@@ -95,7 +99,7 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
           sx={{ mb: 2 }}
           color="primary"
         >
-          🗺️ Навигация по контенту
+          {`🗺️ ${title}`}
         </Typography>
 
         <Tabs
@@ -129,7 +133,7 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
             },
           }}
         >
-          {sectionsConfig.map((section, index) => (
+          {content?.map((section, index) => (
             <Tab
               key={index}
               label={section.title}

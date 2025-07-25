@@ -11,17 +11,36 @@ import {
   Button,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { InputField, ThemeSelector } from "../../components";
+import { InputField } from "../../components";
 import { useFormFieldsContext } from "../../context";
 import { getSetterName, toCamelCase } from "../../utils";
+import { useTranslation } from "react-i18next";
+import { useLocalStorage } from "../../hooks/use-local-storage.hook";
+import { CONFIG_CONSTANTS } from "../../constants";
+import { Settings } from "../Settings";
 
 interface Props {
+  title: string;
   sx?: SxProps;
   paperSx?: SxProps;
 }
 
-export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
+export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx, title }) => {
   const { fields, setters, config, resetToDefaults } = useFormFieldsContext();
+
+  const { t: tCommon } = useTranslation("translation", {
+    keyPrefix: "common",
+  });
+
+  const [templatesExpanded, setTemplatesExpanded] = useLocalStorage<boolean>(
+    CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.TEMPLATES_ACCORDION,
+    true
+  );
+
+  const [settingsExpanded, setSettingsExpanded] = useLocalStorage<boolean>(
+    CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.SETTINGS_ACCORDION,
+    false
+  );
 
   const handleReset = useCallback(() => {
     resetToDefaults();
@@ -29,14 +48,24 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
 
   const content = useMemo(
     () => (
-      <Stack spacing={2}>
+      <Stack
+        spacing={2}
+        sx={{
+          overflow: "auto",
+          scrollbarWidth: "none",
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        }}
+      >
         <Accordion
-          defaultExpanded
+          expanded={templatesExpanded}
+          onChange={(_, isExpanded) => setTemplatesExpanded(isExpanded)}
           sx={{ borderRadius: 1, background: "rgba(0,0,0,0.02)" }}
         >
           <AccordionSummary expandIcon={<ExpandMore />}>
             <Typography variant="subtitle1" fontWeight={600}>
-              📝 Параметры сервера
+              {`📝 ${title}`}
             </Typography>
           </AccordionSummary>
           <AccordionDetails
@@ -68,32 +97,29 @@ export const TemplatesMenu: React.FC<Props> = ({ sx, paperSx }) => {
               fullWidth
               onClick={handleReset}
             >
-              🔄 Сбросить к дефолтным значениям
+              {tCommon("actions.reset")}
             </Button>
           </AccordionDetails>
         </Accordion>
 
-        <Accordion
-          sx={{
-            "&::before": {
-              display: "none",
-            },
-            borderRadius: 1,
-            background: "rgba(0,0,0,0.02)",
-          }}
-        >
-          <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography variant="subtitle1" fontWeight={600}>
-              🎨 Настройки
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ThemeSelector title="Teма" />
-          </AccordionDetails>
-        </Accordion>
+        <Settings
+          expanded={settingsExpanded}
+          onChange={(_, isExpanded) => setSettingsExpanded(isExpanded)}
+        />
       </Stack>
     ),
-    [config, fields, handleReset, setters]
+    [
+      templatesExpanded,
+      title,
+      config,
+      handleReset,
+      tCommon,
+      settingsExpanded,
+      setTemplatesExpanded,
+      fields,
+      setters,
+      setSettingsExpanded,
+    ]
   );
 
   return (

@@ -28,7 +28,7 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
             fontSize: { xs: "1rem", sm: "2rem", md: "2.5rem" },
           }}
         >
-          🚀 Настройка VPS сервера
+          Настройка VPS сервера
         </Typography>
         <Typography
           variant="h4"
@@ -49,7 +49,7 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
           top: 0,
           zIndex: 1000,
         }}
-        title={"🚀 Настройка VPS сервера"}
+        title={"Настройка VPS сервера"}
         onClick={onBurgerClick}
       />
     </Fragment>
