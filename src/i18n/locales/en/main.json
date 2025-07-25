@@ -5,7 +5,13 @@
         "title": "Content Navigation"
       },
       "templates_menu": {
-        "title": "Input Parameters"
+        "title": "Input Parameters",
+        "section":{
+          "block":{
+            "code": "Command",
+            "steps": "Steps"
+          }
+        }
       },
       "settings": {
         "title": "Settings",

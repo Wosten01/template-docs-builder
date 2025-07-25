@@ -1,16 +1,16 @@
 import React, { useMemo } from "react";
 import { Typography, Stack, Accordion, Box, Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import type { Block as block, StepItem } from "../../configs";
-import { Block } from "../Block";
 import { useFormFieldsContext } from "../../context";
 import { useHashScroll, useLocalStorage } from "../../hooks";
 import { CONFIG_CONSTANTS } from "../../constants";
+import type { Block, StepItem } from "../../utils";
+import { Block as BlockSection } from "../Block";
 
 interface Props {
   title: string;
   sectionIdx: number;
-  blocks?: block[];
+  blocks?: Block[];
 }
 
 export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
@@ -35,7 +35,7 @@ export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
       blocks?.map((block, idx) => {
         const id = `${sectionIdx}-${idx}`;
         return (
-          <Block
+          <BlockSection
             key={id}
             code={block.code?.(fields)}
             steps={block.steps?.map((step): StepItem => {

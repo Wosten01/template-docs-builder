@@ -1,5 +1,5 @@
 import { isString } from "formik";
-import type { StepItem } from "../configs";
+import type { StepItem } from "./content.utils";
 
 export const extractStepProperties = (step: StepItem) => {
   const stepText = isString(step) ? step : step.text;

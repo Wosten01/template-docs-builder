@@ -13,10 +13,10 @@ import {
   Stack,
   Checkbox,
 } from "@mui/material";
-import type { CodeItem, StepItem } from "../../configs";
 import { CodeBlock } from "../CodeBlock";
-import { extractStepProperties } from "../../utils";
+import { extractStepProperties, type CodeItem, type StepItem } from "../../utils";
 import { CONFIG_CONSTANTS } from "../../constants";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title?: string;
@@ -37,8 +37,13 @@ export const Block: React.FC<Props> = ({
   sx,
   size = "medium",
 }) => {
+  const { t } = useTranslation("translation", {
+    keyPrefix: "main_page.feature",
+  });
+
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
+
   const [completedSteps, setCompletedSteps] = useState<boolean[]>(() => {
     if (!steps || !title) return [];
     const saved = localStorage.getItem(`steps-${title}`);
@@ -71,10 +76,11 @@ export const Block: React.FC<Props> = ({
 
     return (
       <div>
-        <Typography variant="body1">Шаги:</Typography>
+        <Typography variant="body1">{`${t("templates_menu.section.block.steps")}:`}</Typography>
         <Box>
           {steps.map((step, index) => {
-            const { stepText, codeText, showArrow, separateLines } = extractStepProperties(step);
+            const { stepText, codeText, showArrow, separateLines } =
+              extractStepProperties(step);
 
             return (
               <Fragment key={index}>
@@ -160,11 +166,14 @@ export const Block: React.FC<Props> = ({
         </Box>
       </div>
     );
-  }, [steps, completedSteps, theme.palette.primary.main, theme.palette.background.paper, theme.palette.divider, theme.palette.action.hover, theme.palette.text.primary, title, sizeStyles, handleStepToggle]);
+  }, [steps, t, completedSteps, theme.palette.primary.main, theme.palette.background.paper, theme.palette.divider, theme.palette.action.hover, theme.palette.text.primary, title, sizeStyles, handleStepToggle]);
 
   useEffect(() => {
     if (steps && title) {
-      localStorage.setItem(`${CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.STEPS_PREFIX}${title}`, JSON.stringify(completedSteps));
+      localStorage.setItem(
+        `${CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.STEPS_PREFIX}${title}`,
+        JSON.stringify(completedSteps)
+      );
     }
   }, [completedSteps, steps, title]);
 

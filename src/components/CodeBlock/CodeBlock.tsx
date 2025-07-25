@@ -8,6 +8,7 @@ import {
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useCopy } from "../../hooks";
+import { useTranslation } from "react-i18next";
 
 interface SingleCodeBlockProps {
   id?: string;
@@ -35,6 +36,9 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
   isCompleted = false,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation("translation", {
+    keyPrefix: "main_page.feature",
+  });
 
   const isDark = theme.palette.mode === "dark";
   const { handleCopy, isCopied } = useCopy();
@@ -48,7 +52,11 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
 
   return (
     <div>
-      {showTitle && <Typography variant="body1">Команда:</Typography>}
+      {showTitle && (
+        <Typography variant="body1">
+          {t("templates_menu.section.block.code")}:
+        </Typography>
+      )}
       <Paper
         variant="outlined"
         sx={{
@@ -127,7 +135,7 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
             fontWeight: "400",
             fontFamily: "'Courier New', monospace",
             fontSize: "0.85rem",
-            marginRight: 1, 
+            marginRight: 1,
           }}
         >
           {code}

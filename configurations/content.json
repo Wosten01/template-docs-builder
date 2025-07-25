@@ -230,32 +230,231 @@
       }
     ]
   },
+
   "en": {
-    "title": "Настройка VPS сервера",
-    "description": "Быстрая настройка и конфигурация вашего VPS сервера",
+    "title": "VPS Server Setup",
+    "description": "Quick setup and configuration of your VPS server",
     "content": [
       {
-        "title": "Основные",
+        "title": "Basics",
         "blocks": [
           {
-            "title": "Подключение к серверу",
-            "description": "Подключение к VPS по SSH. После ввода команды потребуется ввести пароль пользователя (пароль не отображается).",
+            "title": "Connecting to the server",
+            "description": "Connect to the VPS via SSH. After entering the command, you will need to enter the user password (the password is not displayed).",
             "code": "ssh root@{server_ip}"
           },
           {
-            "title": "Обновление системы",
-            "description": "Обновляет список пакетов и устанавливает последние доступные обновления.",
+            "title": "System update",
+            "description": "Updates the package list and installs the latest available upgrades.",
             "code": "sudo apt update && sudo apt upgrade -y"
           },
           {
-            "title": "Создание нового пользователя и добавление в sudo",
-            "description": "Создаёт нового пользователя и даёт ему права администратора (через группу sudo). При создании потребуется придумать пароль и при желании заполнить дополнительные данные (они необязательны и могут быть пропущены нажатием Enter).",
+            "title": "Creating a new user and adding to sudo",
+            "description": "Creates a new user and grants them administrator rights (via the sudo group). You will need to come up with a password and optionally fill additional data (optional and can be skipped by pressing Enter).",
             "code": "adduser {username} && usermod -aG sudo {username}"
           },
           {
-            "title": "Переключение на нового пользователя",
-            "description": "После создания нового пользователя рекомендуется работать под его именем. Для этого используйте команду ниже и введите пароль нового пользователя.",
+            "title": "Switching to the new user",
+            "description": "After creating the new user, it is recommended to work under their account. Use the command below and enter the new user's password.",
             "code": "su - {username}"
+          }
+        ]
+      },
+      {
+        "title": "SSH Keys",
+        "blocks": [
+          {
+            "title": "Creating an ed25519 SSH key with a specified name and path",
+            "description": "Generates an ed25519 SSH key with the ability to specify a comment (-C) and a file path (-f). The key will be saved in the specified folder.",
+            "steps": [
+              "Open a terminal.",
+              {
+                "text": "Enter the command specifying your comment (e.g., name or email) and the path to the desired folder/file.",
+                "code": "ssh-keygen -t ed25519 -C \"{ssh_comment}\" -f {ssh_path_to_key}"
+              },
+              "Press Enter. If the folder does not exist, create it in advance: mkdir -p ~/.ssh/vps",
+              "Optionally enter a passphrase for the key or leave it empty."
+            ]
+          },
+          {
+            "title": "Copying the SSH key to the server",
+            "description": "Copies the public key to the server for passwordless login.",
+            "steps": [
+              "Ensure the server is accessible via SSH.",
+              {
+                "text": "Run the command:",
+                "code": "ssh-copy-id -i {ssh_path_to_key}.pub {username}@{server_ip}"
+              },
+              "Enter the server user's password when requested.",
+              "Now you will be able to log in using your SSH key without entering a password each time."
+            ]
+          },
+          {
+            "title": "Configuring connection in ~/.ssh/config",
+            "description": "Allows creating a simple alias command for connecting to the server without entering IP, login, and key path every time.",
+            "steps": [
+              {
+                "text": "Open or create the configuration file:",
+                "code": { "text": "nano ~/.ssh/config", "showArrow": "true" }
+              },
+              {
+                "text": "Add the following block to the file (replace values with your own):",
+                "code": {
+                  "text": "Host {host_name}\n\tHostName {server_ip}\n\tUser {username}\n\tPort {ssh_port}\n\tIdentityFile {ssh_path_to_key}.pub\n\tIdentitiesOnly yes",
+                  "showArrow": "false"
+                }
+              },
+              "Save the file (Ctrl+O), then exit the editor (Ctrl+X).",
+              {
+                "text": "Check permissions:",
+                "code": "chmod 600 ~/.ssh/config"
+              },
+              {
+                "text": "After configuration, you can connect to the server via alias:",
+                "code": "ssh {host_name}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Server Configuration",
+        "blocks": [
+          {
+            "title": "Changing SSH port, disabling password and root login",
+            "description": "Enhances server security: configures a non-standard SSH port, disables password login and direct access for the root user.",
+            "steps": [
+              {
+                "text": "Open the SSH configuration file:",
+                "code": "sudo nano /etc/ssh/sshd_config"
+              },
+              {
+                "text": "Find or add the following lines and set the desired values:",
+                "code": {
+                  "text": "Port {ssh_port}\nPermitRootLogin no\nPasswordAuthentication no",
+                  "separateLines": "true"
+                }
+              },
+              "Make sure the lines are not commented out (no # at the line start).",
+              "Save changes (Ctrl+O), press Enter and exit the editor (Ctrl+X).",
+              {
+                "text": "Allow the new port in the firewall (if using UFW):",
+                "code": "sudo ufw allow {ssh_port}/tcp && sudo ufw reload"
+              },
+              {
+                "text": "Restart the SSH service to apply the updated settings:",
+                "code": "sudo systemctl restart ssh"
+              },
+              {
+                "text": "You can now connect using the alias name (you may need to enter the {username} code again):",
+                "code": "ssh {host_name}"
+              }
+            ],
+            "note": "Do not close the active SSH session until you verify that you can connect via the new port. Ensure SSH keys are set up and the user has sudo access. The chosen port should be between 1024–65535 and not used by other services."
+          }
+        ]
+      },
+      {
+        "title": "VPN Setup",
+        "blocks": [
+          {
+            "title": "Creating a self-signed certificate",
+            "description": "Generating an SSL certificate using openssl to secure the connection:",
+            "code": "sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \\\n  -keyout /etc/x-ui/selfsigned.key \\\n  -out /etc/x-ui/selfsigned.crt \\\n  -subj \"/CN={server_ip}\""
+          },
+          {
+            "title": "Installing 3X-UI",
+            "description": "Installing the 3X-UI panel using the installation script.",
+            "steps": [
+              {
+                "text": "After successful installation, check which port the 3X-UI panel is running on.",
+                "code": "curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh | sudo bash"
+              },
+              {
+                "text": "You can check the service status or processes using the command below, or check configuration files or panel logs.",
+                "code": "sudo systemctl status x-ui"
+              },
+              "The console will display login information; open the URL provided in the console."
+            ],
+            "note": "Make sure the port is open and not blocked by your provider or local firewall settings before working with the panel."
+          },
+          {
+            "title": "Adding certificate to the x-ui panel",
+            "description": "Specify the created certificate and key files in the 'Certificates' section under the 'Panel Settings' tab.",
+            "steps": [
+              "  /etc/x-ui/selfsigned.crt – certificate",
+              "  /etc/x-ui/selfsigned.key – private key"
+            ]
+          },
+          {
+            "title": "Connection setup",
+            "steps": [
+              "Go to the 'Inbounds' tab",
+              "Click 'Add Inbounds'",
+              "In 'Remark' enter a name (connection name)",
+              "Select 'vless' for 'Protocol'",
+              "Enter 443 for 'Port'",
+              "In 'Security' select 'Reality'",
+              "You can select any option for 'uTLS'",
+              "The 'Dest' choice is described below (you may leave as is, but this parameter affects speed and should be taken seriously)",
+              "Click 'Get New Cert'"
+            ]
+          },
+          {
+            "title": "User setup",
+            "note": "You can add multiple users at once using the 'Add Bulk' button",
+            "steps": [
+              "Click the 'Add Client' button in the 'Menu' column",
+              "Instead of Email, enter a name (or anything else)",
+              "Set 'Flow' to xtls-rprx-vision"
+            ]
+          },
+          {
+            "title": "Selecting a 'dest' site for Reality",
+            "description": "Recommended sites for the 'dest' parameter and checking access speed.\nYou can choose and test one of the suggested sites or select your own:",
+            "steps": [
+              {
+                "text": "www.samsung.com:",
+                "code": "ping -c 4 www.samsung.com"
+              },
+              {
+                "text": "www.googletagmanager.com:",
+                "code": "ping -c 4 www.googletagmanager.com"
+              },
+              {
+                "text": "www.asus.com:",
+                "code": "ping -c 4 www.asus.com"
+              },
+              {
+                "text": "www.amd.com:",
+                "code": "ping -c 4 www.amd.com"
+              },
+              {
+                "text": "www.cisco.com:",
+                "code": "ping -c 4 www.cisco.com"
+              },
+              {
+                "text": "www.microsoft.com:",
+                "code": "ping -c 4 www.microsoft.com"
+              },
+              {
+                "text": "dl.google.com:",
+                "code": "ping -c 4 dl.google.com"
+              },
+              {
+                "text": "www.linksys.com:",
+                "code": "ping -c 4 www.linksys.com"
+              },
+              {
+                "text": "www.nvidia.com:",
+                "code": "ping -c 4 www.nvidia.com"
+              }
+            ]
+          },
+          {
+            "title": "Opening ports",
+            "description": "If you have completed the previous steps, you have opened port 443 for 'Inbound' and {3x-ui-port} for the 3X-UI panel.",
+            "code": "sudo ufw allow 443/tcp && sudo ufw allow {3x-ui-port}/tcp && sudo ufw reload"
           }
         ]
       }
