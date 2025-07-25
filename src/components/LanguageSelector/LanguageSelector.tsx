@@ -24,13 +24,15 @@ export const LanguageSelector: React.FC<Props> = ({ title }) => {
     initI18n.fallbackLng
   );
 
-
   return (
     <Box sx={{ top: 16, right: 16, minWidth: 140 }}>
       <FormControl size="small" fullWidth>
         <Selector
           value={i18n.language}
-          onChange={setSavedLanguage}
+          onChange={(lng) => {
+            setSavedLanguage(lng);
+            i18n.changeLanguage(lng);
+          }}
           options={languages}
           label={title}
         />
