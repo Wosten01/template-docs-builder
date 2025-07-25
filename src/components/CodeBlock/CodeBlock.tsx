@@ -53,7 +53,12 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
   return (
     <div>
       {showTitle && (
-        <Typography variant="body1">
+        <Typography
+          variant="body1"
+          sx={{
+            color: `${theme.palette.primary.main} !important`,
+          }}
+        >
           {t("templates_menu.section.block.code")}:
         </Typography>
       )}

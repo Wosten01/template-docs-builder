@@ -41,10 +41,6 @@ export const Section: React.FC<Props> = ({
 
   const { ref } = useHashScroll(sectionId);
 
-  if (note) {
-    console.log(note(fields));
-  }
-
   const renderBlocks = useMemo(
     () =>
       blocks?.map((block, idx) => {

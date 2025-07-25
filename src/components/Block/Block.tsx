@@ -82,9 +82,12 @@ export const Block: React.FC<Props> = ({
 
     return (
       <div>
-        <Typography variant="body1">{`${t(
-          "templates_menu.section.block.steps"
-        )}:`}</Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            color: `${theme.palette.primary.main} !important`,
+          }}
+        >{`${t("templates_menu.section.block.steps")}:`}</Typography>
         <Box>
           {steps.map((step, index) => {
             const { stepText, codeText, showArrow, separateLines } =
