@@ -16,7 +16,8 @@
       "settings": {
         "title": "Настройки",
         "theme": "Teма",
-        "language": "Язык"
+        "language": "Язык",
+         "reset_progress":"Сбросить прогресс"
       },
       "content": {
         "title": "Документация"

@@ -4,16 +4,27 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFormFieldsContext } from "../../context";
 import { useHashScroll, useLocalStorage } from "../../hooks";
 import { CONFIG_CONSTANTS } from "../../constants";
-import type { Block, StepItem } from "../../utils";
-import { Block as BlockSection } from "../Block";
+import type {
+  Block as BlockType,
+  StepItem,
+  StringWithTemplate,
+} from "../../utils";
+import { Block } from "../Block";
+import { Note } from "../Note";
 
 interface Props {
   title: string;
   sectionIdx: number;
-  blocks?: Block[];
+  blocks?: BlockType[];
+  note?: StringWithTemplate;
 }
 
-export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
+export const Section: React.FC<Props> = ({
+  title,
+  blocks,
+  sectionIdx,
+  note,
+}) => {
   const { fields } = useFormFieldsContext();
 
   const sectionId = useMemo(
@@ -30,12 +41,16 @@ export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
 
   const { ref } = useHashScroll(sectionId);
 
+  if (note) {
+    console.log(note(fields));
+  }
+
   const renderBlocks = useMemo(
     () =>
       blocks?.map((block, idx) => {
         const id = `${sectionIdx}-${idx}`;
         return (
-          <BlockSection
+          <Block
             key={id}
             code={block.code?.(fields)}
             steps={block.steps?.map((step): StepItem => {
@@ -100,6 +115,7 @@ export const Section: React.FC<Props> = ({ title, blocks, sectionIdx }) => {
             mb: 8,
           }}
         >
+          {note && <Note title={note(fields)} />}
           {renderBlocks}
         </Stack>
       </Collapse>

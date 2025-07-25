@@ -36,8 +36,8 @@
     "placeholder": "22"
   },
   {
-    "key": "3x-ui-port",
-    "label": "3x-ui-port",
+    "key": "3x_ui_port",
+    "label": "3x_ui_port",
     "defaultValue": "",
     "placeholder": "82123"
   }

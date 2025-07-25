@@ -14,9 +14,15 @@ import {
   Checkbox,
 } from "@mui/material";
 import { CodeBlock } from "../CodeBlock";
-import { extractStepProperties, type CodeItem, type StepItem } from "../../utils";
+import {
+  extractStepProperties,
+  toKebabCase,
+  type CodeItem,
+  type StepItem,
+} from "../../utils";
 import { CONFIG_CONSTANTS } from "../../constants";
 import { useTranslation } from "react-i18next";
+import { Note } from "../Note";
 
 interface Props {
   title?: string;
@@ -76,7 +82,9 @@ export const Block: React.FC<Props> = ({
 
     return (
       <div>
-        <Typography variant="body1">{`${t("templates_menu.section.block.steps")}:`}</Typography>
+        <Typography variant="body1">{`${t(
+          "templates_menu.section.block.steps"
+        )}:`}</Typography>
         <Box>
           {steps.map((step, index) => {
             const { stepText, codeText, showArrow, separateLines } =
@@ -151,7 +159,7 @@ export const Block: React.FC<Props> = ({
                 {codeText && (
                   <div className="ml-8 mb-4">
                     <CodeBlock
-                      id={`step-${title}-${index}`}
+                      id={`step-${toKebabCase(title || "")}-${index}`}
                       code={codeText}
                       showArrow={showArrow}
                       separateLines={separateLines}
@@ -166,7 +174,19 @@ export const Block: React.FC<Props> = ({
         </Box>
       </div>
     );
-  }, [steps, t, completedSteps, theme.palette.primary.main, theme.palette.background.paper, theme.palette.divider, theme.palette.action.hover, theme.palette.text.primary, title, sizeStyles, handleStepToggle]);
+  }, [
+    steps,
+    t,
+    completedSteps,
+    theme.palette.primary.main,
+    theme.palette.background.paper,
+    theme.palette.divider,
+    theme.palette.action.hover,
+    theme.palette.text.primary,
+    title,
+    sizeStyles,
+    handleStepToggle,
+  ]);
 
   useEffect(() => {
     if (steps && title) {
@@ -215,23 +235,7 @@ export const Block: React.FC<Props> = ({
       )}
 
       <Stack sx={{ mt: 4 }} spacing={4}>
-        {note && (
-          <Typography
-            variant="body2"
-            sx={{
-              mb: 2,
-              color: theme.palette.warning.main,
-              lineHeight: 1.5,
-              fontStyle: "italic",
-              backgroundColor: theme.palette.warning.main + "10",
-              padding: 1,
-              borderRadius: 1,
-              border: `1px solid ${theme.palette.warning.main}30`,
-            }}
-          >
-            📝 {note}
-          </Typography>
-        )}
+        {note && <Note title={note} />}
 
         {renderedSteps}
 
@@ -243,7 +247,7 @@ export const Block: React.FC<Props> = ({
             separateLines={
               typeof code === "object" ? code.separateLines || false : false
             }
-            id={`main-${title}`}
+            id={`main-${toKebabCase(title || "")}`}
             sizeStyles={sizeStyles}
           />
         )}

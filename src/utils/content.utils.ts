@@ -29,11 +29,13 @@ interface BlockRaw {
 export interface Section {
   id: string;
   title: string;
+  note?: StringWithTemplate;
   blocks?: Block[];
 }
 
 export interface SectionRaw {
   title: string;
+  note?: string;
   blocks?: BlockRaw[];
 }
 
@@ -96,6 +98,7 @@ export const convertRawToParsedSections = (
       ? rawSections.content.map((section) => ({
           id: uuidv4(),
           title: section.title,
+          note: section.note ? parseTemplate(section.note) : undefined,
           blocks: section.blocks
             ? section.blocks.map((block) => ({
                 title: block.title,

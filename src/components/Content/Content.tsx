@@ -9,8 +9,9 @@ interface Props {
   spacing?: number;
 }
 
-export const Content: React.FC<Props> = (({ sx, title }) => {
- const {content} =  useContentConfig()
+export const Content: React.FC<Props> = ({ sx, title }) => {
+  const { content } = useContentConfig();
+
 
   const sections = useMemo(
     () =>
@@ -18,6 +19,7 @@ export const Content: React.FC<Props> = (({ sx, title }) => {
         <Section
           key={section.title}
           title={section.title}
+          note={section.note}
           blocks={section.blocks}
           sectionIdx={gIdx}
         />
@@ -51,4 +53,4 @@ export const Content: React.FC<Props> = (({ sx, title }) => {
       </Stack>
     </Box>
   );
-});
+};

@@ -16,7 +16,8 @@
       "settings": {
         "title": "Settings",
         "theme": "Theme",
-        "language": "Language"
+        "language": "Language",
+        "reset_progress":"Reset progress"
       },
       "content": {
         "title": "Documentation"

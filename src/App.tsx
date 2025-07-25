@@ -8,24 +8,29 @@ import { MainAppBar, TemplatesMenu } from "./features";
 import { FormFieldsProvider } from "./context";
 import { BrowserRouter } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { CONFIG_CONSTANTS } from "./constants";
+import { initI18n } from "./i18n";
+import { useLocalStorage } from "./hooks";
 
 export const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme } = useTheme();
   const muiTheme = useMemo(() => createTheme(theme), [theme]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { t } = useTranslation("translation", {
+  const { t, i18n } = useTranslation("translation", {
     keyPrefix: "main_page.feature",
   });
 
   useEffect(() => {
+    document.body.style.backgroundColor = muiTheme.palette.background.default;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [muiTheme.palette.background.default]);
 
   const templatesMenuSx = useMemo(
     () => ({
@@ -139,6 +144,17 @@ export const App: React.FC = () => {
   );
 
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("lg"));
+
+  const [savedLanguage] = useLocalStorage(
+    CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.SELECTED_LANGUAGE,
+    initI18n.fallbackLng
+  );
+
+  useEffect(() => {
+    if (savedLanguage && i18n.language !== savedLanguage) {
+      i18n.changeLanguage(savedLanguage);
+    }
+  }, [savedLanguage, i18n]);
 
   return (
     <BrowserRouter>

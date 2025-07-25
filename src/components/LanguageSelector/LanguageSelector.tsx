@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { Box, FormControl } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { initI18n, SUPPORTED_LANGUAGES } from "../../i18n";
@@ -20,16 +19,11 @@ export const LanguageSelector: React.FC<Props> = ({ title }) => {
     label: tCommon(`language.names.${lng}`),
   }));
 
-  const [savedLanguage, setSavedLanguage] = useLocalStorage(
+  const [, setSavedLanguage] = useLocalStorage(
     CONFIG_CONSTANTS.LOCAL_STORAGE_KEYS.SELECTED_LANGUAGE,
     initI18n.fallbackLng
   );
 
-  useEffect(() => {
-    if (savedLanguage && i18n.language !== savedLanguage) {
-      i18n.changeLanguage(savedLanguage);
-    }
-  }, [savedLanguage, i18n]);
 
   return (
     <Box sx={{ top: 16, right: 16, minWidth: 140 }}>

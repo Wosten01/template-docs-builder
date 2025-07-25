@@ -8,6 +8,7 @@ import {
 import { ExpandMore } from "@mui/icons-material";
 import { ThemeSelector, LanguageSelector } from "../../components";
 import { useTranslation } from "react-i18next";
+import { RestartProgressButton } from "../RestartProgressButton";
 
 interface SettingsProps {
   expanded: boolean;
@@ -53,6 +54,7 @@ export const Settings: React.FC<SettingsProps> = ({ expanded, onChange }) => {
       >
         <ThemeSelector title={tSettings("theme")} />
         <LanguageSelector title={tSettings("language")} />
+        <RestartProgressButton title={tSettings("reset_progress")} />
       </AccordionDetails>
     </Accordion>
   );

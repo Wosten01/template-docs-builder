@@ -104,7 +104,7 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
                     }80`
                   : "none",
               }
-            : {},
+            : undefined,
           "&::after": {
             content: '""',
             position: "absolute",
@@ -136,6 +136,7 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
             fontFamily: "'Courier New', monospace",
             fontSize: "0.85rem",
             marginRight: 1,
+            marginLeft: showArrow ? 8 : 0,
           }}
         >
           {code}
@@ -187,22 +188,42 @@ const SingleCodeBlock: React.FC<SingleCodeBlockProps> = ({
   );
 };
 
-export const CodeBlock: React.FC<CodeBlockProps> = (props: CodeBlockProps) => {
-  if (props.separateLines) {
-    const codeLines = props.code
-      .split("\n")
-      .filter((line) => line.trim() !== "");
+export const CodeBlock: React.FC<CodeBlockProps> = ({
+  id,
+  showTitle,
+  showArrow,
+  code,
+  sizeStyles,
+  isCompleted,
+  separateLines,
+}: CodeBlockProps) => {
+  if (separateLines) {
+    const codeLines = code.split("\n").filter((line) => line.trim() !== "");
 
     return codeLines.map((codeLine, index) => {
       return (
         <SingleCodeBlock
-          key={`${props.id}-line-${index}`}
-          {...props}
+          id={id}
+          key={`${id}-line-${index}`}
+          sizeStyles={sizeStyles}
+          isCompleted={isCompleted}
+          showArrow={showArrow}
+          showTitle={showTitle}
           code={codeLine}
         />
       );
     });
   }
 
-  return <SingleCodeBlock {...props} />;
+  return (
+    <SingleCodeBlock
+      id={id}
+      key={id}
+      sizeStyles={sizeStyles}
+      isCompleted={isCompleted}
+      showArrow={showArrow}
+      showTitle={showTitle}
+      code={code}
+    />
+  );
 };
