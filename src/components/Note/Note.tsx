@@ -20,6 +20,7 @@ export const Note: React.FC<Props> = ({ title }) => {
         border: `1px solid ${theme.palette.warning.main}30`,
         userSelect: "text",
         wordBreak: "break-word",
+        p:2,
       }}
     >
       📝 {title}

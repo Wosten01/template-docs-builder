@@ -3,42 +3,12 @@
     "key": "server_ip",
     "label": "SERVER_IP",
     "defaultValue": "192.x.x.x",
-    "placeholder": "например, 1.2.3.4"
+    "placeholder": "1.2.3.4"
   },
   {
     "key": "username",
     "label": "USERNAME",
     "defaultValue": "user",
-    "placeholder": "например, user"
-  },
-  {
-    "key": "ssh_comment",
-    "label": "ssh_comment",
-    "defaultValue": "comment",
-    "placeholder": "~/.ssh/folder/id_ed25519_name"
-  },
-  {
-    "key": "ssh_path_to_key",
-    "label": "ssh_path_to_key",
-    "defaultValue": "~/.ssh/id_ed25519",
-    "placeholder": "~/.ssh/folder/id_ed25519_name"
-  },
-  {
-    "key": "host_name",
-    "label": "host_name",
-    "defaultValue": "host",
-    "placeholder": "host_name"
-  },
-   {
-    "key": "ssh_port",
-    "label": "ssh_port",
-    "defaultValue": "61213",
-    "placeholder": "22"
-  },
-  {
-    "key": "3x_ui_port",
-    "label": "3x_ui_port",
-    "defaultValue": "",
-    "placeholder": "82123"
+    "placeholder": "user"
   }
 ]
