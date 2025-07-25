@@ -75,9 +75,9 @@
         "blocks": [
           {
             "title": "Где хранится документация",
-            "description": "Вся документация хранится в файле `vps-configuration/configurations/content.json`. В этом файле вы можете добавлять новые разделы, блоки, шаги, команды и заметки для каждого поддерживаемого языка.",
+            "description": "Вся документация хранится в файле `template-docs-builder/configurations/content.json`. В этом файле вы можете добавлять новые разделы, блоки, шаги, команды и заметки для каждого поддерживаемого языка.",
             "steps": [
-              "Откройте файл `vps-configuration/configurations/content.json`.",
+              "Откройте файл `template-docs-builder/configurations/content.json`.",
               "Найдите нужный язык (например, \"ru\" или \"en\").",
               "В массиве `content` добавьте или измените разделы. Каждый раздел может содержать `title`, `code`, `blocks` и (опционально) `note`.",
               "В каждом разделе добавляйте блоки с их `title`, `description`, `steps`, `code` и `note`.",
@@ -88,7 +88,7 @@
           },
           {
             "title": "Как добавить переменную в form-fields-config.json",
-            "description": "Чтобы добавить новую переменную, откройте файл `./configurations/form-fields-config.json` и добавьте объект с нужными параметрами.",
+            "description": "Чтобы добавить новую переменную, откройте файл `template-docs-builder/configurations/form-fields-config.json` и добавьте объект с нужными параметрами.",
             "steps": [
               {
                 "text": "Пример объекта для новой переменной:",
@@ -98,7 +98,7 @@
                 }
               }
             ],
-            "note": "После добавления переменной {example} в `./configurations/form-fields-config.json` вы сможете использовать её в качестве шаблона для команд и описаниях."
+            "note": "После добавления переменной {example} в `template-docs-builder/configurations/form-fields-config.json` вы сможете использовать её в качестве шаблона для команд и описаниях."
           },
           {
             "title": "Примеры шаблонов в командах",
@@ -194,7 +194,7 @@
             "steps": [
               {
                 "text": "Перейдите на страницу проекта:",
-                "code": "https://github.com/your-username/your-repo"
+                "code": "https://github.com/Wosten01/template-docs-builder"
               },
               "Нажмите кнопку 'Star' в правом верхнем углу страницы.",
               "Вы великолепны!"
@@ -208,6 +208,210 @@
   },
 
   "en": {
-    "...": "..."
+    "title": "Documentation Title in English",
+    "description": "Description in English",
+    "content": [
+      {
+        "title": "🖥️ Section (UI Features)",
+        "code": "Section code",
+        "blocks": [
+          {
+            "title": "Block",
+            "description": "Block description",
+            "steps": [
+              "Step",
+              {
+                "text": "Step with command:",
+                "code": "command"
+              },
+              {
+                "text": "Step with command without arrow:",
+                "code": { "text": "command", "showArrow": false }
+              },
+              {
+                "text": "Step with long command split into multiple blocks:",
+                "code": {
+                  "text": "command 1\ncommand 2\ncommand 3\ncommand 4\n"
+                }
+              },
+              {
+                "text": "Step with long command split into multiple blocks and without arrow:",
+                "code": {
+                  "text": "command 5\ncommand 6\ncommand 7\ncommand 8\n",
+                  "showArrow": false
+                }
+              }
+            ],
+            "code": "Command for the entire block",
+            "note": "Note in the block"
+          }
+        ],
+        "note": "Note for the section"
+      },
+      {
+        "title": "🧩 Working with Templates",
+        "code": "echo \"Hello, {username}! You are connecting to {server_ip}\"",
+        "blocks": [
+          {
+            "title": "Variable Substitution Example",
+            "description": "This block shows how variables are automatically substituted in commands and texts.",
+            "steps": [
+              {
+                "text": "Execute the command to greet the user:",
+                "code": "echo \"Hello, {username}!\""
+              },
+              {
+                "text": "Check the server IP:",
+                "code": "ping {server_ip}"
+              },
+              {
+                "text": "Combine multiple variables in one command:",
+                "code": "ssh {username}@{server_ip}"
+              },
+              {
+                "text": "You can use templates in step descriptions too: Hello, {username}, your server is {server_ip}."
+              }
+            ],
+            "code": "echo \"{username}@{server_ip}\"",
+            "note": "All values in curly braces are automatically replaced with the data you entered."
+          }
+        ],
+        "note": "This section demonstrates template capabilities. Change variable values in settings — and they will be substituted in all commands and descriptions."
+      },
+      {
+        "title": "📝 How to Edit and Extend Documentation",
+        "blocks": [
+          {
+            "title": "Where Documentation is Stored",
+            "description": "All documentation is stored in the file `template-docs-builder/configurations/content.json`. In this file you can add new sections, blocks, steps, commands and notes for each supported language.",
+            "steps": [
+              "Open the file `template-docs-builder/configurations/content.json`.",
+              "Find the needed language (for example, \"ru\" or \"en\").",
+              "In the `content` array add or modify sections. Each section can contain `title`, `code`, `blocks` and (optionally) `note`.",
+              "In each section add blocks with their `title`, `description`, `steps`, `code` and `note`.",
+              "Steps can be a string or an object with fields `text`, `code`, as well as additional options (`showArrow`, `separateLines`).",
+              "In any text or command you can use templates in curly braces (for example, `{username}`, `{server_ip}`), which will be automatically substituted from user settings."
+            ],
+            "note": "To add a new language, copy the structure of an existing language and translate all fields. To extend the set of variables edit the file `form-fields-config.json`."
+          },
+          {
+            "title": "How to Add a Variable in form-fields-config.json",
+            "description": "To add a new variable, open the file `template-docs-builder/configurations/form-fields-config.json` and add an object with the needed parameters.",
+            "steps": [
+              {
+                "text": "Example object for a new variable:",
+                "code": {
+                  "showArrow": false,
+                  "text": "{\n  \"key\": \"example\",\n  \"label\": \"example_name\",\n  \"defaultValue\": \"defaultValue\",\n  \"placeholder\": \"user\"\n}"
+                }
+              }
+            ],
+            "note": "After adding the variable {example} in `template-docs-builder/configurations/form-fields-config.json` you will be able to use it as a template for commands and descriptions."
+          },
+          {
+            "title": "Template Examples in Commands",
+            "description": "You can use variables in curly braces in any command or text. They will be automatically replaced with values entered by the user.",
+            "steps": [
+              {
+                "text": "Server connection:",
+                "code": "ssh {username}@{server_ip} -p {ssh_port}"
+              },
+              {
+                "text": "SSH key generation:",
+                "code": "ssh-keygen -t ed25519 -C \"{ssh_comment}\" -f {ssh_path_to_key}"
+              },
+              {
+                "text": "Connection check:",
+                "code": "ping {server_ip}"
+              }
+            ]
+          }
+        ],
+        "note": "This section explains how to maintain and extend your documentation. Edit `content.json` to add new sections, blocks and steps. Use templates for dynamic content."
+      },
+      {
+        "title": "🚀 Running and Building the Project",
+        "blocks": [
+          {
+            "title": "Installing Dependencies",
+            "description": "Before running the project, you need to install all dependencies.",
+            "steps": [
+              {
+                "text": "Install dependencies using npm:",
+                "code": "npm install"
+              }
+            ]
+          },
+          {
+            "title": "Running in Development Mode",
+            "description": "For development and testing use the dev server.",
+            "steps": [
+              {
+                "text": "Start the dev server:",
+                "code": "npm run dev"
+              },
+              "Open your browser and go to the address shown in the console (usually http://localhost:5173)."
+            ],
+            "note": "In development mode changes are applied automatically (hot reload)."
+          },
+          {
+            "title": "Building for Production",
+            "description": "To create an optimized version of the application use the build command.",
+            "steps": [
+              {
+                "text": "Build the project:",
+                "code": "npm run build"
+              },
+              "Ready files will be created in the `dist/` folder."
+            ],
+            "note": "For convenience of transfer, the project will compile the resulting documentation into a large `index.html` file. The file can be opened in a browser and used as intended."
+          }
+        ],
+        "note": "This section contains basic commands for working with the project: installation, development, building and testing."
+      },
+      {
+        "title": "✨ Additional Application Features",
+        "blocks": [
+          {
+            "title": "Progress Caching",
+            "description": "The application automatically saves your progress on completed steps in the browser's localStorage. This allows you to return to working with the documentation and see which steps have already been completed, even after reloading the page or closing the browser.",
+            "steps": [
+              "Completed steps are marked with a checkmark and saved locally.",
+              "To reset progress use the corresponding button in the application settings."
+            ],
+            "note": "Your progress is saved only on this device and in this browser."
+          },
+          {
+            "title": "Changing Interface Language",
+            "description": "You can switch the application interface language at any time through the settings menu. All instructions and commands will automatically be displayed in the selected language.",
+            "steps": [
+              "Open the settings menu (⚙️ icon).",
+              "Select the needed language from the list.",
+              "The interface and documentation language will change instantly."
+            ],
+            "note": "To add new languages simply add the corresponding section to the `content.json` file."
+          }
+        ]
+      },
+      {
+        "title": "⭐ Support the Project",
+        "blocks": [
+          {
+            "title": "Rate the Project on GitHub",
+            "description": "If you liked this project, please support it — give it a ⭐️ on GitHub!",
+            "steps": [
+              {
+                "text": "Go to the project page:",
+                "code": "https://github.com/Wosten01/template-docs-builder"
+              },
+              "Click the 'Star' button in the upper right corner of the page.",
+              "You are awesome!"
+            ],
+            "note": "Your support helps the project development and the appearance of new features!"
+          }
+        ],
+        "note": "Thank you for your support! This motivates us to develop the project further."
+      }
+    ]
   }
 }
