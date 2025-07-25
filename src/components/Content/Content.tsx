@@ -10,11 +10,11 @@ interface Props {
 }
 
 export const Content: React.FC<Props> = (({ sx, title }) => {
- const contentConfig =  useContentConfig()
+ const {content} =  useContentConfig()
 
   const sections = useMemo(
     () =>
-      contentConfig.content?.map((section, gIdx) => (
+      content?.map((section, gIdx) => (
         <Section
           key={section.title}
           title={section.title}
@@ -22,7 +22,7 @@ export const Content: React.FC<Props> = (({ sx, title }) => {
           sectionIdx={gIdx}
         />
       )),
-    [contentConfig]
+    [content]
   );
 
   return (

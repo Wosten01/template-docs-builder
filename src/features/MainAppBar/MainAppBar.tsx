@@ -2,12 +2,17 @@ import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import { Fragment } from "react";
 import { AppBar } from "../../components/AppBar";
+import { useContentConfig } from "../../hooks";
 
 interface Props {
   onMenuClick?: () => void;
 }
 
-export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props) => {
+export const MainAppBar: React.FC<Props> = ({
+  onMenuClick: onBurgerClick,
+}: Props) => {
+  const { title, description } = useContentConfig();
+
   return (
     <Fragment>
       <Box
@@ -28,7 +33,7 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
             fontSize: { xs: "1rem", sm: "2rem", md: "2.5rem" },
           }}
         >
-          Настройка VPS сервера
+          {title}
         </Typography>
         <Typography
           variant="h4"
@@ -39,7 +44,7 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
             fontSize: { xs: "1rem", sm: "1.2rem", md: "1.5rem" },
           }}
         >
-          Быстрая настройка и конфигурация вашего VPS сервера
+          {description}
         </Typography>
       </Box>
       <AppBar
@@ -49,7 +54,7 @@ export const MainAppBar: React.FC<Props> = ({onMenuClick: onBurgerClick}: Props)
           top: 0,
           zIndex: 1000,
         }}
-        title={"Настройка VPS сервера"}
+        title={title}
         onClick={onBurgerClick}
       />
     </Fragment>

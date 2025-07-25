@@ -16,7 +16,7 @@ export const ContentNavigation: React.FC<ContentNavigationProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const location = useLocation();
-   const content =  useContentConfig().content
+   const { content }=  useContentConfig()
 
   useEffect(() => {
     const hashFromUrl = decodeURIComponent(location.hash.slice(1));
